@@ -1,72 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Foody</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
-  <!-- <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css"> -->
-  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Caveat|Montserrat&display=swap" rel="stylesheet" />
-</head>
+<ons-page>
+  <ons-toolbar id="home-toolbar">
+    <div class="center" id="curPage">Home</div>
+    <div class="left">
+      <ons-toolbar-button onclick="openMenu()">
+        <ons-icon icon="md-menu"></ons-icon>
+      </ons-toolbar-button>
+    </div>
+  </ons-toolbar>
 
-<body>
   <ul class="nav nav-tabs nav-justified fixed-bottom" style="font-weight: bold;">
-    <li class="nav-item">
+    <li class="nav-item" onclick="changeTitle('Home')">
       <a class="nav-link active" data-toggle="tab" href="#home">
         <!-- <span class="glyphicon glyphicon-home"></span> -->Home
       </a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link " data-toggle="tab" href="#search">
+    <li class="nav-item" onclick="changeTitle('Search')">
+      <a class="nav-link" data-toggle="tab" href="search.html">
         <!-- <span class="glyphicon glyphicon-search"></span> -->Search
       </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" onclick="changeTitle('Shopping')">
       <a class="nav-link" data-toggle="tab" href="#shopping">
         <!-- <span class="glyphicon glyphicon-shopping-cart"></span> -->Shopping
       </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" onclick="changeTitle('Friends')">
       <a class="nav-link" data-toggle="tab" href="#friends">
         <!-- <span class="glyphicon glyphicon-user"></span> -->Friends
       </a>
     </li>
   </ul>
-  <div class="container" style="border: solid;">
-    <div class="tab-content">
-      <!-- Home Page -->
-      <div class="tab-pane active fade show" id="home">
-        <h1>Home Page</h1>
-      </div>
-
-      <!-- Search Page -->
-      <div class="tab-pane fade" id="search">
-        <h1>Search Page</h1>
-      </div>
-
-      <!--health-->
-      <div class="tab-pane container fade" id="shopping">
-        <h1>Shopping List Page</h1>
-      </div>
-      <!--outfit-->
-      <div class="tab-pane container fade" id="friends">
-        <h1>Friends Page</h1>
-      </div>
+  
+  <div class="tab-content">
+    <!-- Home Page -->
+    <div class="tab-pane active fade show" id="home">
+      <h1>Home Page</h1>
+    </div>
+  
+    <!-- Search Page -->
+    <div class="tab-pane fade" id="search">
+      <h1>Search Page</h1>
+    </div>
+  
+    <!--health-->
+    <div class="tab-pane container fade" id="shopping">
+      <h1>Shopping List Page</h1>
+    </div>
+    <!--outfit-->
+    <div class="tab-pane container fade" id="friends">
+      <h1>Friends Page</h1>
     </div>
   </div>
 
-  </div>
-
-
-
-
-</body>
-
-</html>
+  <script>
+  const openMenu = () => {
+    document.querySelector('#menu').open();
+  };
+  const changeTitle = (title) =>{
+    document.getElementById('curPage').innerHTML = title;
+  };
+</script>
+</ons-page>
