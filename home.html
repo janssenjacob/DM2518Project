@@ -13,20 +13,30 @@
   <link href="https://fonts.googleapis.com/css?family=Caveat|Montserrat&display=swap" rel="stylesheet" />
 </head>
 <body>
-    <ons-splitter>
-        <ons-splitter-side id="menu" collapse width="220px">
-          <ons-page>
-            <ons-list>
-              <ons-list-item onclick="loadPage('about.html')">
-                About
-              </ons-list-item>
-            </ons-list>
-          </ons-page>
-        </ons-splitter-side>
-    
-        <ons-splitter-content>
-          <ons-navigator id="navigator" page="search.html"></ons-navigator>
-        </ons-splitter-content>
-      </ons-splitter>
+  <div class="container">
+  </p>
+  <ul class="nav nav-tabs nav-justified" style="margin-bottom: 16px;">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#weather">
+        <p class="d-none d-sm-block" style="margin-bottom: 0px;">Home</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#outfit">
+        <p class="d-none d-sm-block" style="margin-bottom: 0px;">Search</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#news">
+        <p class="d-none d-sm-block" style="margin-bottom: 0px;">Shopping List</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#health">
+        <p class="d-none d-sm-block" style="margin-bottom: 0px;">Friends</p>
+      </a>
+    </li>
+  </ul>
+</div>
 </body>
 </html>
