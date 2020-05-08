@@ -1,42 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Liftaday</title>
-  <link rel="icon" href="pic/logo_nobg.ico" type="image/x-icon">
+  <title>Foody</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+  <!-- <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css"> -->
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Caveat|Montserrat&display=swap" rel="stylesheet" />
 </head>
+
 <body>
-  <div class="container">
-  </p>
-  <ul class="nav nav-tabs nav-justified" style="margin-bottom: 16px;">
+  <ul class="nav nav-tabs nav-justified fixed-bottom" style="font-weight: bold;">
     <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#weather">
-        <p class="d-none d-sm-block" style="margin-bottom: 0px;">Home</p>
+      <a class="nav-link active" data-toggle="tab" href="#home">
+        <!-- <span class="glyphicon glyphicon-home"></span> -->Home
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#outfit">
-        <p class="d-none d-sm-block" style="margin-bottom: 0px;">Search</p>
+      <a class="nav-link " data-toggle="tab" href="#search">
+        <!-- <span class="glyphicon glyphicon-search"></span> -->Search
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#news">
-        <p class="d-none d-sm-block" style="margin-bottom: 0px;">Shopping List</p>
+      <a class="nav-link" data-toggle="tab" href="#shopping">
+        <!-- <span class="glyphicon glyphicon-shopping-cart"></span> -->Shopping
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#health">
-        <p class="d-none d-sm-block" style="margin-bottom: 0px;">Friends</p>
+      <a class="nav-link" data-toggle="tab" href="#friends">
+        <!-- <span class="glyphicon glyphicon-user"></span> -->Friends
       </a>
     </li>
   </ul>
-</div>
+  <div class="container" style="border: solid;">
+    <div class="tab-content">
+      <!-- Home Page -->
+      <div class="tab-pane active fade show" id="home">
+        <h1>Home Page</h1>
+      </div>
+
+      <!-- Search Page -->
+      <div class="tab-pane fade" id="search">
+        <h1>Search Page</h1>
+      </div>
+
+      <!--health-->
+      <div class="tab-pane container fade" id="shopping">
+        <h1>Shopping List Page</h1>
+      </div>
+      <!--outfit-->
+      <div class="tab-pane container fade" id="friends">
+        <h1>Friends Page</h1>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+
+
+
 </body>
+
 </html>
