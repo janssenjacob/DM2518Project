@@ -1,0 +1,34 @@
+<ons-page>
+  <ons-toolbar id="home-toolbar">
+    <div class="center" id="curPage">Home</div>
+    <div class="left">
+      <ons-toolbar-button onclick="openMenu()">
+        <ons-icon icon="md-menu" size="lg"></ons-icon>
+      </ons-toolbar-button>
+    </div>
+  </ons-toolbar>
+
+  <ons-tabbar id="tabbar">
+    <ons-tab page="home.html" label="Home" >
+      <ons-icon icon="md-run"></ons-icon>
+    </ons-tab>
+    <ons-tab page="search.html" label="Search" >
+      <ons-icon icon="md-check"></ons-icon>
+    </ons-tab>
+    <ons-tab page="shopping.html" label="Shopping">
+      <ons-icon icon="md-check"></ons-icon>
+    </ons-tab>
+    <ons-tab page="friends.html" label="Friends" >
+      <ons-icon icon="md-check"></ons-icon>
+    </ons-tab>
+  </ons-tabbar>
+
+  <script>
+  const openMenu = () => {
+    document.querySelector('#menu').open();
+  };
+  const changeTitle = (title) =>{
+    document.getElementById('curPage').innerHTML = title;
+  };
+</script>
+</ons-page>
