@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Liftaday</title>
+  <link rel="icon" href="pic/logo_nobg.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Caveat|Montserrat&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <ons-splitter>
+        <ons-splitter-side id="menu" collapse width="220px">
+          <ons-page>
+            <ons-list>
+              <ons-list-item onclick="loadPage('about.html')">
+                About
+              </ons-list-item>
+            </ons-list>
+          </ons-page>
+        </ons-splitter-side>
+    
+        <ons-splitter-content>
+          <ons-navigator id="navigator" page="search.html"></ons-navigator>
+        </ons-splitter-content>
+      </ons-splitter>
+</body>
+</html>
