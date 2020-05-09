@@ -1,6 +1,128 @@
-<ons-page>
+<ons-page style="overflow: hidden;">
+  <script>
+    (()=>{
+      document.getElementById('dropdownMenuButton').innerHTML = 'All';
+      document.getElementById('All').classList.add('active');
+    })()
+    const changeSearchType = (type)=>{
+      var cur = document.getElementById('dropdownMenuButton').innerHTML;
+      console.log(cur);
+      if(cur === 'All')
+        document.getElementById('All').classList.remove('active');
+      else if(cur === 'Cooked')
+        document.getElementById('Cooked').classList.remove('active');
+      else
+        document.getElementById('Liked').classList.remove('active');
+      document.getElementById(type).classList.add('active');
+      document.getElementById('dropdownMenuButton').innerHTML = type;
+    }
+  </script>
+  <style>
+    .fixedElement {
+      z-index: 999;
+    position:fixed;
+    width: 100%;
+  }
+  .dropdown{
+    width: 30%;
+    float: right;
+    height: 49px;
+  }
+  </style>
   <!-- Enter what ever you want here, both bootstrap and OnsenUI -->
-  <div>
-    <h1 style="text-align: center;">Search Page</h1>
+  <!-- Search whatever and press enter -->
+  <form action="#" method="GET" class="fixedElement"> 
+      <ons-search-input 
+      placeholder="Search Recipe"
+      onchange="ons.notification.alert('Searched for: ' + this.value)" 
+      modifier = "material"
+      style="width: 70%;"
+      ></ons-search-input>
+      <div class="dropdown">
+        <button class="btn dropdown-toggle btn-primary" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+         aria-haspopup="true" aria-expanded="false" style=" width: 100%;height: 100%;">
+          All
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a id="All" class="dropdown-item" href="#" onclick="changeSearchType('All')">All</a>
+          <a id="Cooked" class="dropdown-item" href="#" onclick="changeSearchType('Cooked')">Cooked</a>
+          <a id="Liked" class="dropdown-item" href="#" onclick="changeSearchType('Liked')">Liked</a>
+        </div>
+      </div>
+    <input type="submit" style="position: absolute; left: -9999px"/>
+  </form>
+  <div style="padding-top: 50px;overflow: auto;">
+    <ons-list>
+      <ons-list-header>Default</ons-list-header>
+      <ons-list-item>Item A</ons-list-item>
+      <ons-list-item>Item B</ons-list-item>
+  
+      <ons-list-header>Expandable</ons-list-header>
+      <ons-list-item expandable>
+        Tap to expand
+        <div class="expandable-content">Expandable content</div>
+      </ons-list-item>
+  
+      <ons-list-header>Tappable / Ripple</ons-list-header>
+      <ons-list-item tappable>Tap me</ons-list-item>
+  
+      <ons-list-header>Chevron</ons-list-header>
+      <ons-list-item modifier="chevron" tappable>Chevron</ons-list-item>
+  
+      <ons-list-header>Thumbnails and titles</ons-list-header>
+      <ons-list-item>
+        <div class="left">
+          <img class="list-item__thumbnail" src="https://placekitten.com/g/40/40">
+        </div>
+        <div class="center">
+          <span class="list-item__title">Cutest kitty</span><span class="list-item__subtitle">On the Internet</span>
+        </div>
+      </ons-list-item>
+  
+      <ons-list-header>Icons</ons-list-header>
+      <ons-list-item>
+        <div class="left">
+          <ons-icon icon="md-face" class="list-item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          Icon
+        </div>
+      </ons-list-item>
+  
+      <ons-list-header>Switch</ons-list-header>
+      <ons-list-item>
+        <div class="center">
+          Turn it on
+        </div>
+        <div class="right">
+          <ons-switch></ons-switch>
+        </div>
+      </ons-list-item>
+  
+      <ons-list-header>Switch and icon</ons-list-header>
+      <ons-list-item>
+        <div class="left">
+          <ons-icon icon="md-face" class="list-item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          Icon and switch
+        </div>
+        <div class="right">
+          <ons-switch></ons-switch>
+        </div>
+      </ons-list-item>
+  
+      <ons-list-header>No divider</ons-list-header>
+      <ons-list-item modifier="nodivider">Item A</ons-list-item>
+      <ons-list-item modifier="nodivider">Item B</ons-list-item>
+  
+      <ons-list-header>Long divider</ons-list-header>
+      <ons-list-item modifier="longdivider">Item A</ons-list-item>
+      <ons-list-item modifier="longdivider">Item B</ons-list-item>
+    </ons-list>
+  
+    <br />
   </div>
+     
+
 </ons-page>
