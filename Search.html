@@ -1,6 +1,63 @@
-<ons-page>
+<ons-page id="searchPage">
+  <script>
+    (()=>{
+      document.getElementById('dropdownMenuButton').innerHTML = 'All';
+      document.getElementById('All').classList.add('active');
+    })()
+    const changeSearchType = (type)=>{
+      var cur = document.getElementById('dropdownMenuButton').innerHTML;
+      console.log(cur);
+      if(cur === 'All')
+        document.getElementById('All').classList.remove('active');
+      else if(cur === 'Cooked')
+        document.getElementById('Cooked').classList.remove('active');
+      else
+        document.getElementById('Liked').classList.remove('active');
+      document.getElementById(type).classList.add('active');
+      document.getElementById('dropdownMenuButton').innerHTML = type;
+    }
+  </script>
+  <style>
+    .fixedElement {
+    position:fixed;
+    width: 100%;
+  }
+  .dropdown{
+    width: 30%;
+    float: right;
+    height: 48px;
+  }
+  </style>
   <!-- Enter what ever you want here, both bootstrap and OnsenUI -->
-  <div>
-    <h1 style="text-align: center;">Search Page</h1>
-  </div>
+  <!-- Search whatever and press enter -->
+  <form action="#" method="GET" class="fixedElement"> 
+      <ons-search-input 
+      placeholder="Search Recipe"
+      onchange="ons.notification.alert('Searched for: ' + this.value)" 
+      modifier = "material"
+      style="width: 70%;"
+      ></ons-search-input>
+      <div class="dropdown">
+        <button class="btn dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown"
+         aria-haspopup="true" aria-expanded="false" style=" width: 100%;height: 100%;">
+          All
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a id="All" class="dropdown-item" href="#" onclick="changeSearchType('All')">All</a>
+          <a id="Cooked" class="dropdown-item" href="#" onclick="changeSearchType('Cooked')">Cooked</a>
+          <a id="Liked" class="dropdown-item" href="#" onclick="changeSearchType('Liked')">Liked</a>
+        </div>
+      </div>
+    <input type="submit" style="position: absolute; left: -9999px"/>
+
+  </form>
+
+  <br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br>
+      
+     
+
 </ons-page>
