@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <script src="./bootstrap/bootstrap.min.js"></script>
+  <style>
+    .google-btn {
+      font-weight: border;
+      color: white;
+      background-color: #DF4B3B;
+    }
+
+    .google-btn:hover {
+      color: white;
+      background-color: #C53120;
+    }
+
+    .form-signup {
+      display: none;
+      margin-top: 40%;
+    }
+
+    @media screen and (max-width:800px) {
+      .google-btn span {
+        display: none;
+      }
+
+      .google-btn:after {
+        content: 'Google+';
+      }
+    }
+  </style>
+  <title>Login</title>
+</head>
+
+<body>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyDaRcu7ldHzrYsYv0721sEB103EJDsx6Z8",
+      authDomain: "dm2518project.firebaseapp.com",
+      databaseURL: "https://dm2518project.firebaseio.com",
+      projectId: "dm2518project",
+      storageBucket: "dm2518project.appspot.com",
+      messagingSenderId: "465561954957",
+      appId: "1:465561954957:web:db8aaeb8d1bc99dec050c4",
+      measurementId: "G-H0VPGN111D"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    function handleSignUp() {
+      var email = document.getElementById('user-email').value;
+      var password = document.getElementById('user-pass').value;
+      var repeatpass = document.getElementById('user-repeatpass').value;
+
+      if (repeatpass !== password) {
+        alert('Please repeat your password correctly.');
+        return;
+      }
+      if (email.length < 4) {
+        alert('Please enter an email address.');
+        return;
+      }
+      if (password.length < 4) {
+        alert('Please enter a password.');
+        return;
+      }
+
+      firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        if (errorCode == 'auth/weak-password') {
+          alert('The password is too weak.');
+        } else {
+          alert(errorMessage);
+        }
+        console.log(error);
+        if (error == null) {
+          firebase.auth().signInWithEmailAndPassword(email, password);
+        }
+      })
+    }
+
+    function handleSignIn() {
+      var email = document.getElementById('inputEmail').value;
+      var password = document.getElementById('inputPassword').value;
+      if (email.length < 4) {
+        alert('Please enter an email address.');
+        return;
+      }
+      if (password.length < 4) {
+        alert('Please enter a password.');
+        return;
+      }
+
+      firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // [START_EXCLUDE]
+        if (errorCode === 'auth/wrong-password') {
+          alert('Wrong password.');
+        } else {
+          alert(errorMessage);
+        }
+        console.log(error);
+      })
+    }
+
+    function handleGoogle() {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(function (result) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+        // ...
+      }).catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+        // ...
+      });
+    }
+  </script>
+
+  <div class="container">
+    <div id="logreg-forms">
+      <form class="form-signin">
+        <div id="logo-block" style="text-align: center; margin: 50px auto;">
+          <img src="./pic/fork-clipart-cartoon-3.png" alt="logo" style="width: 50%; max-width: 400px;" id="logo-pic">
+        </div>
+
+        <div class="form-group">
+          <label for="inputEmail">Email Address:</label>
+          <input type="email" id="inputEmail" class="form-control" placeholder="Email Address" required autofocus>
+        </div>
+
+        <div class="form-group">
+          <label for="inputPassword">Password:</label>
+          <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        </div>
+
+        <div class="form-check">
+          <input type="checkbox" id="rem-pwd" class="form-check-input">
+          <label for="rem-pwd" class="form-check-label">Remember Me</label>
+        </div>
+        <br>
+
+        <div class="signin" style="text-align: center;">
+          <button class="btn btn-success col-4" type="submit" id="signin" onclick="handleSignIn()"
+            style="margin: 0 5%;">
+            <i class="fas fa-sign-in-alt"></i> Sign in
+          </button>
+
+          <button class="btn google-btn col-4" type="button" style="margin: 0 5%;" onclick="handleGoogle()">
+            <i class="fab fa-google-plus-g"></i>
+            <span>Sign in with Google+</span>
+          </button>
+        </div>
+        <hr>
+
+        <div class="signup-btn" style="text-align: center;">
+          <button class="btn btn-primary col-4" type="button" id="btn-signup">
+            <i class="fas fa-user-plus"></i> Sign up
+          </button>
+        </div>
+      </form>
+
+      <form action="/signup/" class="form-signup">
+        <input type="text" id="user-name" class="form-control" placeholder="Full name" required>
+        <input type="email" id="user-email" class="form-control" placeholder="Email address" required>
+        <input type="password" id="user-pass" class="form-control" placeholder="Password" required>
+        <input type="password" id="user-repeatpass" class="form-control" placeholder="Repeat Password" required>
+        <br>
+
+        <div class="signup-btn" style="text-align: center;">
+          <button class="btn btn-primary col-4" type="button" id="signup" onclick="handleSignUp()">
+            <i class="fas fa-user-plus"></i> Sign up
+          </button>
+        </div>
+        <a href="#" id="btn-signup-cancel"><i class="fas fa-angle-left"></i> Back</a>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function toggleSignUp(e) {
+      e.preventDefault();
+      $('#logreg-forms .form-signin').toggle();
+      $('#logreg-forms .form-signup').toggle();
+    }
+
+    $(() => {
+      $('#logreg-forms #btn-signup').click(toggleSignUp);
+      $('#logreg-forms #btn-signup-cancel').click(toggleSignUp);
+    });
+  </script>
+</body>
+
+</html>
