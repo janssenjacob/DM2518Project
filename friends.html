@@ -1,6 +1,103 @@
 <ons-page>
-    <!-- Enter what ever you want here, both bootstrap and OnsenUI -->
-    <div>
-      <h1 style="text-align: center;">Friends Page</h1>
+  <style>
+    .fixed {
+    width: 100%;
+    position:fixed;
+    -webkit-transform:translate(40%, 0px);
+  }
+  </style>
+  <script>
+    var config = {
+      apiKey: "AIzaSyBvh5pwxn0uzj34KSVglhEzms-XqFuVaPQ",
+      authDomain: "dm2518-lab.firebaseapp.com",
+      databaseURL: "https://dm2518-lab.firebaseio.com",
+      storageBucket: "dm2518-lab.appspot.com",
+    };
+    firebase.initializeApp(config);
+    var database = firebase.database();
+    var container = document.getElementById('container');
+    var inputFrd = document.querySelector('#inputFrd');
+    var popover = document.getElementById('popover');
+    var test = firebase.database().ref('test/');
+    test.once('value').then(function(snapshot) {
+      snapshot.forEach(child => {
+        displayFriends(child.val());
+      });
+    });
+    function displayFriends(frd) {
+      container.appendChild(ons.createElement(`
+      <div id="${frd.username}" class="media text-muted pt-3">
+          <img src="${frd.picture}" class="align-self-start mr-3" width="32" height="32">
+          <div class="media-body">
+            <div class="d-flex justify-content-between">
+              <strong class="text-gray-dark">${frd.username}</strong>
+              <a href="javascript:void(0)" onclick="confirm(this)">Unfriend</a>
+            </div>
+          </div>
+      </div>`));
+    }
+    function writeUserData(username, url) {
+      var user = {
+        username: username,
+        picture: url,
+      };
+      firebase.database().ref('test/'+username).set(user);
+      displayFriends(user);
+    }
+    const showPopover = (target) => {
+      popover.show(target);
+    }
+    const hidePopover = () => {
+      inputFrd.value = '';
+      popover.hide();
+    }
+    const addFriends = () => {
+      console.log(inputFrd.value);
+      if (search(inputFrd.value)) {
+        writeUserData(inputFrd.value, '');
+        inputFrd.value = '';
+      } else ons.notification.alert(`No ${inputFrd.value}`);
+      //inputFrd.value = '';
+    }
+    const search = (username) => {
+      return true;
+    }
+    const confirm = (el) => {
+      var id = el.parentNode.parentNode.parentNode.id;
+      ons.notification.confirm(`Are you sure you want to unfriend ${id}?`)
+      .then((x) => {if (x==1) {
+          firebase.database().ref('test/'+id).remove();
+          document.getElementById(id).remove();
+        }
+      });
+    }
+  </script>
+  <body>
+    <ons-popover direction="down" id="popover">
+      <div style="padding: 10px; text-align: center;">
+        <p>
+          <ons-input 
+              id="inputFrd" 
+              placeholder="Username" 
+              modifier="underbar"
+          >
+          </ons-input>
+        </p>
+        <p>
+          <button class="btn btn-outline-primary btn-sm" onclick="hidePopover()">Cancel</button>
+          <button class="btn btn-outline-primary btn-sm" onclick="addFriends()">OK</button>
+        </p>
+      </div>
+    </ons-popover>
+    <div class="fixed">
+      <button class="btn btn-outline-primary btn-sm" onclick="showPopover(this)">
+        <svg class="bi bi-person-plus-fill" width="1em" height="1em" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 100-6 3 3 0 000 6zm7.5-3a.5.5 0 01.5.5v2a.5.5 0 01-.5.5h-2a.5.5 0 010-1H13V5.5a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
+          <path fill-rule="evenodd" d="M13 7.5a.5.5 0 01.5-.5h2a.5.5 0 010 1H14v1.5a.5.5 0 01-1 0v-2z" clip-rule="evenodd"/>
+        </svg>
+        Add Friends
+      </button>
     </div>
+    <div id="container" class="my-0 p-3 bg-white rounded"></div>
+  </body>
 </ons-page>
