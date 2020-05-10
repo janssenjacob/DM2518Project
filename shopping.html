@@ -1,7 +1,7 @@
 <ons-page>
   <script>
     ons.ready(function () {
-        var list = document.getElementById('repeatlist');
+        var list = document.getElementById('recipelist');
         list.delegate = {
           createItemContent: function (index) {
             // Return a DOM element here.
@@ -9,7 +9,7 @@
           },
           countItems: function () {
             // Return the number of items here.
-            return 100;
+            return 20;
           },
           calculateItemHeight: function (index) {
             // Optional: return the height of the item at position `index`.
