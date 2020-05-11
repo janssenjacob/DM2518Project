@@ -98,3 +98,13 @@ function handleGoogle() {
   });
 }
 
+function handleReset() {
+  var email = document.getElementById('inputEmail').value;
+  firebase.auth().sendPasswordResetEmail(email).then(function() {
+    alert('An email has sent to your email address.');
+  }).catch(function(error) {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.log(error);
+  })
+}
