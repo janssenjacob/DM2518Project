@@ -28,7 +28,7 @@
 
     .form-signup {
       display: none;
-      margin-top: 40%;
+      margin-top: 25%;
     }
 
     @media screen and (max-width:800px) {
@@ -45,9 +45,9 @@
 </head>
 
 <body>
-  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-firestore.js"></script>
   <script src="./js/firebase.js"></script>
 
   <div class="container">
@@ -60,9 +60,7 @@
         <div class="form-group">
           <label for="inputEmail">Email Address:</label>
           <input type="email" id="inputEmail" class="form-control" placeholder="Email Address" required autofocus>
-        </div>
-
-        <div class="form-group">
+          <br>
           <label for="inputPassword">Password:</label>
           <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
         </div>
@@ -70,11 +68,14 @@
         <div class="form-check">
           <input type="checkbox" id="rem-pwd" class="form-check-input">
           <label for="rem-pwd" class="form-check-label">Remember Me</label>
+          <button type="button" class="btn btn-link btn-sm" id="reset-pwd" style="float: right; margin-top: -4px;" onclick="handleReset()">
+            Forgot Password?
+          </button>
         </div>
         <br>
 
         <div class="signin" style="text-align: center;">
-          <button class="btn btn-success col-4" type="submit" id="signin" onclick="handleSignIn()"
+          <button class="btn btn-success col-4" type="button" id="signin" onclick="handleSignIn()"
             style="margin: 0 5%;">
             <i class="fas fa-sign-in-alt"></i> Sign in
           </button>
@@ -94,10 +95,21 @@
       </form>
 
       <form action="/signup/" class="form-signup">
-        <input type="text" id="user-name" class="form-control" placeholder="Full name" required>
-        <input type="email" id="user-email" class="form-control" placeholder="Email address" required>
-        <input type="password" id="user-pass" class="form-control" placeholder="Password" required>
-        <input type="password" id="user-repeatpass" class="form-control" placeholder="Repeat Password" required>
+        <h2>Sign Up Now!</h2>
+        <hr>
+        <div class="signup-group">
+          <label for="user-name">Username:</label>
+          <input type="text" id="user-name" class="form-control" placeholder="Username" required>
+          <br>
+          <label for="user-email">Email Address:</label>
+          <input type="email" id="user-email" class="form-control" placeholder="Email Address" required>
+          <br>
+          <label for="user-pass">Password:</label>
+          <input type="password" id="user-pass" class="form-control" placeholder="Password" required>
+          <br>
+          <label for="user-repearpass">Repeat Password:</label>
+          <input type="password" id="user-repeatpass" class="form-control" placeholder="Repeat Password" required>
+        </div>
         <br>
 
         <div class="signup-btn" style="text-align: center;">
