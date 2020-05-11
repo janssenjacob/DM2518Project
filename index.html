@@ -3,7 +3,7 @@
 
 <head>
   <style>
-    body{
+    body {
       overflow: hidden;
     }
   </style>
@@ -24,7 +24,7 @@
   <script>
     const loadPage = (page) => {
       document.querySelector('#menu').close();
-      document.querySelector('#navigator').bringPageTop(page, {animation: 'slide'});
+      document.querySelector('#navigator').bringPageTop(page, { animation: 'slide' });
     };
   </script>
 </head>
@@ -33,9 +33,17 @@
   <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-auth.js"></script>
   <!-- <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script> -->
-  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-database.js"></script> -->
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-database.js"></script>
   <script src="./js/firebase.js"></script>
-
+  <script>
+    var user = firebase.auth().currentUser;
+    if (user) {
+      // do nothing
+      console.log('logged in');
+    } else {
+      window.location = 'login.html';
+    }
+  </script>
 
   <div class="container" style="border: solid;">
     <ons-splitter>
@@ -48,20 +56,10 @@
           </ons-list>
         </ons-page>
       </ons-splitter-side>
-  
+
       <ons-splitter-content>
         <ons-navigator id="navigator" page="MainPage.html"></ons-navigator>
       </ons-splitter-content>
-    </ons-splitter> 
+    </ons-splitter>
   </div>
-  <!-- <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script> -->
-  <!-- <script src="/__/firebase/7.14.0/firebase-app.js"></script>
-  <script src="/__/firebase/7.14.0/firebase-auth.js"></script>
-  <script src="/__/firebase/7.14.0/firebase-storage.js"></script>
-  <script src="/__/firebase/7.14.0/firebase-messaging.js"></script>
-  <script src="/__/firebase/7.14.0/firebase-firestore.js"></script>
-  <script src="/__/firebase/7.14.0/firebase-performance.js"></script>
-  <script src="/__/firebase/init.js"></script>
-  <script src="scripts/main.js"></script>
-
 </body>
