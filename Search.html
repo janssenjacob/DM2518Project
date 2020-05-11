@@ -1,4 +1,5 @@
 <ons-page style="overflow: hidden;">
+
   <script>
     (()=>{
       document.getElementById('dropdownMenuButton').innerHTML = 'All';
@@ -16,6 +17,12 @@
       document.getElementById(type).classList.add('active');
       document.getElementById('dropdownMenuButton').innerHTML = type;
     }
+
+    function showDetail(page){
+      document.querySelector('#menu').close();
+      document.querySelector('#navigator').bringPageTop(page, {animation: 'slide'});
+    }
+
   </script>
   <style>
     .fixedElement {
@@ -31,10 +38,10 @@
   </style>
   <!-- Enter what ever you want here, both bootstrap and OnsenUI -->
   <!-- Search whatever and press enter -->
-  <form action="#" method="GET" class="fixedElement"> 
+  <form action="" method="GET" class="fixedElement"> 
       <ons-search-input 
       placeholder="Search Recipe"
-      onchange="ons.notification.alert('Searched for: ' + this.value)" 
+      onchange="updateSearch(this.value)" 
       modifier = "material"
       style="width: 70%;"
       ></ons-search-input>
@@ -49,13 +56,12 @@
           <a id="Liked" class="dropdown-item" href="#" onclick="changeSearchType('Liked')">Liked</a>
         </div>
       </div>
-    <input type="submit" style="position: absolute; left: -9999px"/>
+    <input type="button" onclick="updateSearch()" style="position: absolute; left: -9999px"/>
   </form>
   <div style="padding-top: 50px;overflow: auto;">
     <ons-list>
       <ons-lazy-repeat id="recipelist"></ons-lazy-repeat>
     </ons-list>
-    
   </div>
 
 
