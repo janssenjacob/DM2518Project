@@ -1,5 +1,4 @@
 <ons-page style="overflow: hidden;">
-
   <script>
     (()=>{
       document.getElementById('dropdownMenuButton').innerHTML = 'All';
@@ -18,7 +17,7 @@
       document.getElementById('dropdownMenuButton').innerHTML = type;
     }
 
-    function showDetail(page){
+    function showDetail(listitem,page){
       document.querySelector('#menu').close();
       document.querySelector('#navigator').bringPageTop(page, {animation: 'slide'});
     }
