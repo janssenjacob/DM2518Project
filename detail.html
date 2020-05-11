@@ -1,20 +1,25 @@
 <ons-page id="details">
+    <style>
+        ons-list-item {
+            height:fit-content;
+        }
+    </style>
     <ons-toolbar id="toolbar">
-      <div id="r-title" class="center"></div>
+      <div class="center"></div>
       <div class="left">
-        <ons-back-button></ons-back-button>
+        <ons-back-button onclick="clearPage()"></ons-back-button>
       </div>
     </ons-toolbar>
-    <div>
-        <h1 style="text-align: center;">details</h1>
-    </div>
+    <h2 style="text-align: center;"  id="r-title"></h2>
+    <br>
+    <div id="r-img" style="width: 100%;text-align: center;"></div>
+    <ons-list id="detailList">     
+    </ons-list>
+
     <script>
-        document.addEventListener('init', function(event) {
-        var page = event.target;
-            if (page.id === 'details') {
-                page.querySelector('#r-title').innerHTML = page.data.title;
-            }
-        });
+        var clearPage = ()=>{
+            document.getElementById('detailList').innerHTML = '';
+        }
     </script>
   </ons-page>
   

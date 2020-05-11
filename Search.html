@@ -1,27 +1,4 @@
 <ons-page style="overflow: hidden;">
-
-  <!-- <template id="details.html">
-    <ons-page id="details">
-        <ons-toolbar id="toolbar">
-            <div id="barcenter" class="center"></div>
-            <div class="left">
-              <ons-back-button></ons-back-button>
-            </div>
-          </ons-toolbar>
-          <div>
-              <h1 style="text-align: center;">details</h1>
-          </div>
-    </ons-page>
-  </template> -->
-  <!-- <script>
-    document.addEventListener('init', function (event) {
-      var page = event.target;
-      if (page === 'details') {
-        page.querySelector('#r-title').innerHTML = page.data.title;
-      }
-    });
-  </script> -->
-
   <style>
     .fixedElement {
       z-index: 999;
@@ -63,7 +40,6 @@
     }
   </script>
   
-  <!-- Enter what ever you want here, both bootstrap and OnsenUI -->
   <!-- Search whatever and press enter -->
   <form action="" method="GET" class="fixedElement"> 
       <ons-search-input 
@@ -118,7 +94,7 @@
             // Return a DOM element here.
             // return ons.createElement( '<ons-list-item id="listitem'+index+'">Item'+index+'</ons-list-item>');
             // console.log(Chinese[index].Img);
-            var listitem = '<ons-list-item id="'+index+'"onclick="showDetail(\'detail.html\',this)">'+
+            var listitem = '<ons-list-item id="'+index+'" onclick="showDetail(\'detail.html\',this)">'+
               '<div class="left"> '+
               '<img class="list-item__thumbnail"src="https://'+tempList[index].Img+'">'+
               '</div>'+
@@ -152,13 +128,33 @@
           if(Chinese[i].Title.indexOf(msg)!=-1)
             tempList[count++] = Chinese[i]
         }
+        if(tempList.length === 0){
         var list = document.getElementById('recipelist');
+        list.delegate = {
+          createItemContent: function (index) {
+            return ons.createElement('<ons-list-item> There is no such dish!</ons-list-item>');
+          },
+          countItems: function () {
+            // Return the number of items here.
+            return 1;
+          },
+          calculateItemHeight: function (index) {
+            // Optional: return the height of the item at position `index`.
+            // This can enhance calculations and allow better scrolling.
+            return 0;
+          },
+          destroyItem: function (index, element) {
+            // Remove event listeners, etc. here to avoid memory leaks.
+          }
+        };
+        }else{
+          var list = document.getElementById('recipelist');
         list.delegate = {
           createItemContent: function (index) {
             // Return a DOM element here.
             // return ons.createElement( '<ons-list-item id="listitem'+index+'">Item'+index+'</ons-list-item>');
             // console.log(tempList[index].Img);
-            var listitem = '<ons-list-item id="recipe'+index+'"onclick="showDetail(tempList['+index+'],\'detail.html\')">'+
+            var listitem = '<ons-list-item id="'+index+'" onclick="showDetail(\'detail.html\',this)">'+
               '<div class="left"> '+
               '<img class="list-item__thumbnail"src="https://'+tempList[index].Img+'">'+
               '</div>'+
@@ -182,8 +178,32 @@
             // Remove event listeners, etc. here to avoid memory leaks.
           }
         };
+        }
+        
       }
   </script>
+  <script>
+    document.addEventListener('init', function(event) {
+    var page = event.target;
+        if (page.id === 'details') {
+            page.querySelector('#r-title').innerHTML = page.data.title;
+            page.querySelector('#r-img').innerHTML = '<img src="https://'+page.data.img+'" alt="'+ page.data.title+'Picture">';
+            var Methods = page.data.methods;
+            var Ingreds = page.data.ingredients;
+            var detailList = document.getElementById('detailList');
+            detailList.appendChild(ons.createElement('<ons-list-header>Ingredients</ons-list-header>'));
+            for(i=0;i<Ingreds.length;i++){
+                detailList.appendChild(ons.createElement('<ons-list-item>'+Ingreds[i]+'</ons-list-item>'))
+            }
+            // detailList.appendChild(ons.createElement('<br>'));
+            detailList.appendChild(ons.createElement('<ons-list-header>Methods</ons-list-header>'));
+            for(i=0;i<Methods.length;i++){
+                detailList.appendChild(ons.createElement('<ons-list-item>'+Methods[i]+'</ons-list-item>'))
+            }
+        }
+
+    });
+</script>
 
 </ons-page>
 
