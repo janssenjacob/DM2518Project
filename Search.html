@@ -1,4 +1,5 @@
 <ons-page style="overflow: hidden;">
+  <script src="react/button.js"></script>
   <style>
     .fixedElement {
       z-index: 999;
@@ -11,6 +12,7 @@
     height: 49px;
   }
   </style>
+  
   <script>
     (()=>{
       document.getElementById('dropdownMenuButton').innerHTML = 'All';
@@ -18,7 +20,7 @@
     })()
     const changeSearchType = (type)=>{
       var cur = document.getElementById('dropdownMenuButton').innerHTML;
-      console.log(cur);
+      // console.log(cur);
       if(cur === 'All')
         document.getElementById('All').classList.remove('active');
       else if(cur === 'Cooked')
@@ -78,6 +80,7 @@
     var RecipeList = firebase.database().ref('RecipeList');
       RecipeList.on('value', function(snapshot) {
         Chinese = snapshot.val().chinese;
+<<<<<<< HEAD
         Easter = snapshot.val().easter;
         Spring = snapshot.val().spring;
         Soup = snapshot.val().soup;
@@ -85,6 +88,15 @@
         SlowCook = snapshot.val().slowcook;
         Mother = snapshot.val().mothers;
         //console.log(Chinese[0].Img);
+=======
+        // Easter = snapshot.val().easter;
+        // Spring = snapshot.val().spring;
+        // Soup = snapshot.val().soup;
+        // Vegan = snapshot.val().vegan;
+        // SlowCook = snapshot.val().slowcook;
+        // Mother = snapshot.val().mothers;
+        // console.log(Chinese[0].Img);
+>>>>>>> 92b0b0a3ef9f68eb745b84b0affb5054fe5be8dc
         tempList = Chinese;
         // console.log(Mother[0]);
         (()=>{
@@ -102,7 +114,6 @@
               ' <span class="list-item__title">'+tempList[index].Title+'</span><span class="list-item__subtitle">'+tempList[index].Skill+'</span>'+
               '</div>'+
               '</ons-list-item>';
-              
             return ons.createElement(listitem);
           },
           countItems: function () {
@@ -184,10 +195,12 @@
   </script>
   <script>
     document.addEventListener('init', function(event) {
+      //check the database to see if it's liked by current user
     var page = event.target;
         if (page.id === 'details') {
+          //set the Like button to be "Liked" or "Like"
             page.querySelector('#r-title').innerHTML = page.data.title;
-            page.querySelector('#r-img').innerHTML = '<img src="https://'+page.data.img+'" alt="'+ page.data.title+'Picture">';
+            page.querySelector('#r-img').innerHTML = '<img style="width:100%" src="https://'+page.data.img+'" alt="'+ page.data.title+'Picture">';
             var Methods = page.data.methods;
             var Ingreds = page.data.ingredients;
             var detailList = document.getElementById('detailList');
