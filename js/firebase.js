@@ -137,6 +137,7 @@ function handleLogOut() {
     console.log(error);
     // An error happened.
   });
+}
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
