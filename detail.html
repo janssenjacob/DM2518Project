@@ -9,6 +9,7 @@
       <div class="left">
         <ons-back-button onclick="clearPage()"></ons-back-button>
       </div>
+        <ons-button class="right" style="text-align: center;" id="likeButton" onclick="changeLikeState()">Liked</ons-button>
     </ons-toolbar>
     <h2 style="text-align: center;"  id="r-title"></h2>
     <br>
@@ -20,6 +21,20 @@
         var clearPage = ()=>{
             document.getElementById('detailList').innerHTML = '';
         }
+        
+        var changeLikeState = ()=>{
+          var button = document.getElementById('likeButton').innerHTML;
+          console.log(button);
+          var database = firebase.database();
+          //check the current state and change it to the other
+          if(button === 'Liked'){
+            ons.notification.alert('Do you really want to unlike this?')
+          }
+          if(button === 'Like'){
+            //set the data of the user to Liked and add the recipe to users info
+          }
+        }
+
     </script>
   </ons-page>
   

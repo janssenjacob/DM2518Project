@@ -1,4 +1,5 @@
 <ons-page style="overflow: hidden;">
+  <script src="react/button.js"></script>
   <style>
     .fixedElement {
       z-index: 999;
@@ -11,6 +12,7 @@
     height: 49px;
   }
   </style>
+  
   <script>
     (()=>{
       document.getElementById('dropdownMenuButton').innerHTML = 'All';
@@ -184,10 +186,12 @@
   </script>
   <script>
     document.addEventListener('init', function(event) {
+      //check the database to see if it's liked by current user
     var page = event.target;
         if (page.id === 'details') {
+          //set the Like button to be "Liked" or "Like"
             page.querySelector('#r-title').innerHTML = page.data.title;
-            page.querySelector('#r-img').innerHTML = '<img src="https://'+page.data.img+'" alt="'+ page.data.title+'Picture">';
+            page.querySelector('#r-img').innerHTML = '<img style="width:100%" src="https://'+page.data.img+'" alt="'+ page.data.title+'Picture">';
             var Methods = page.data.methods;
             var Ingreds = page.data.ingredients;
             var detailList = document.getElementById('detailList');
