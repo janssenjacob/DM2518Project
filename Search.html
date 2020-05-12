@@ -80,13 +80,13 @@
     var RecipeList = firebase.database().ref('RecipeList');
       RecipeList.on('value', function(snapshot) {
         Chinese = snapshot.val().chinese;
-        Easter = snapshot.val().easter;
-        Spring = snapshot.val().spring;
-        Soup = snapshot.val().soup;
-        Vegan = snapshot.val().vegan;
-        SlowCook = snapshot.val().slowcook;
-        Mother = snapshot.val().mothers;
-        console.log(Chinese[0].Img);
+        // Easter = snapshot.val().easter;
+        // Spring = snapshot.val().spring;
+        // Soup = snapshot.val().soup;
+        // Vegan = snapshot.val().vegan;
+        // SlowCook = snapshot.val().slowcook;
+        // Mother = snapshot.val().mothers;
+        // console.log(Chinese[0].Img);
         tempList = Chinese;
         // console.log(Mother[0]);
         (()=>{
@@ -104,7 +104,6 @@
               ' <span class="list-item__title">'+tempList[index].Title+'</span><span class="list-item__subtitle">'+tempList[index].Skill+'</span>'+
               '</div>'+
               '</ons-list-item>';
-              
             return ons.createElement(listitem);
           },
           countItems: function () {
