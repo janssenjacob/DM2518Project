@@ -137,6 +137,13 @@ function handleLogOut() {
     console.log(error);
     // An error happened.
   });
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    console.log('in');
+    console.log(user);
+    uid = user.uid;
+  } else {console.log('out')}
+})
 }
 
 function writeUserData(user) {
