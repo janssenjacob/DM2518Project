@@ -9,8 +9,11 @@ var firebaseConfig = {
   measurementId: "G-H0VPGN111D"
 };
 firebase.initializeApp(firebaseConfig);
+var database = firebase.database();
+var uid;
 
 function handleSignUp() {
+  var name = document.getElementById('user-name').value;
   var email = document.getElementById('user-email').value;
   var password = document.getElementById('user-pass').value;
   var repeatpass = document.getElementById('user-repeatpass').value;
@@ -29,8 +32,18 @@ function handleSignUp() {
   }
 
   firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
-    firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
-      window.location.href = 'index.html';
+    firebase.auth().signInWithEmailAndPassword(email, password).then((result) => {
+      var user = result.user;
+      user.updateProfile({
+        displayName: name,
+        photoURL: "./pic/fork-clipart-cartoon-3.png",
+      }).then(() => {
+        uid = user.uid;
+        console.log(uid);
+        writeUserData(user);
+      }).then(() => {
+        window.location.href = 'index.html';
+      })
     })
   }).catch(function (error) {
     var errorCode = error.code;
@@ -59,7 +72,9 @@ function handleSignIn() {
       return;
     }
 
-    firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
+    firebase.auth().signInWithEmailAndPassword(email, password).then((result) => {
+      uid = result.user.uid;
+      console.log(uid);
       window.location.href = 'index.html';
     }).catch(function (error) {
       // Handle Errors here.
@@ -84,10 +99,15 @@ function handleGoogle() {
     // The signed-in user info.
     var user = result.user;
     // ...
-  }).then(user => {
+    uid = user.uid;
+    console.log(uid);
+    if (result.additionalUserInfo.isNewUser)
+      writeUserData(user);
+  }).then(() => {
     window.location.href = 'index.html';
   }).catch(function (error) {
     // Handle Errors here.
+    console.log(error);
     var errorCode = error.code;
     var errorMessage = error.message;
     // The email of the user's account used.
@@ -117,4 +137,25 @@ function handleLogOut() {
     console.log(error);
     // An error happened.
   });
+
+function writeUserData(user) {
+  var newUser = {
+    id: uid,
+    username: user.displayName,
+    email: user.email,
+    picture: user.photoURL,
+    Friends: '',
+    Liked: '',
+    Cooked: '',
+    List: '',
+  };
+  firebase.database().ref('Users/'+uid).set(newUser);
 }
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    console.log('in');
+    console.log(user);
+    uid = user.uid;
+  } else {console.log('out')}
+});
