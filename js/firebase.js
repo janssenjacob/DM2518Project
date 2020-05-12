@@ -108,3 +108,13 @@ function handleReset() {
     console.log(error);
   })
 }
+
+function handleLogOut() {
+  firebase.auth().signOut().then(function() {
+    window.location = 'login.html';
+  }).catch(function(error) {
+    alert('An error occurred.')
+    console.log(error);
+    // An error happened.
+  });
+}
