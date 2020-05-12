@@ -3,7 +3,7 @@
 
 <head>
   <style>
-    body{
+    body {
       overflow: hidden;
     }
   </style>
@@ -12,39 +12,42 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>Foody</title>
   <link rel="stylesheet" href="./bootstrap/bootstrap.min.css" />
-  <!-- <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css"> -->
   <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css" />
   <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Indie Flower" />
   <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> -->
   <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="./bootstrap/bootstrap.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script> 
+  <!-- <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script> 
   <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
+  <script src="https://unpkg.com/react-onsenui@1.11.2/dist/react-onsenui.js"></script> -->
   <script>
     const loadPage = (page) => {
       document.querySelector('#menu').close();
-      document.querySelector('#navigator').bringPageTop(page, {animation: 'slide'});
+      document.querySelector('#navigator').bringPageTop(page, { animation: 'slide' });
     };
   </script>
 </head>
 
 <body>
-  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-auth.js"></script>
+  <!-- <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script> -->
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-database.js"></script>
   <script src="./js/firebase.js"></script>
   <!-- <script>
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        // do nothing
-      } else {
-        window.location.href = 'login.html'
-      }
-    })
+    var user = firebase.auth().currentUser;
+    if (user) {
+      // do nothing
+      console.log('logged in');
+    } else {
+      window.location = 'login.html';
+    }
   </script> -->
 
   <div class="container" style="border: solid;">
@@ -58,24 +61,11 @@
           </ons-list>
         </ons-page>
       </ons-splitter-side>
-  
+
       <ons-splitter-content>
         <ons-navigator id="navigator" page="MainPage.html"></ons-navigator>
       </ons-splitter-content>
-    </ons-splitter> 
+    </ons-splitter>
   </div>
-
-
-  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-database.js"></script>
-  <!-- <script src="/__/firebase/7.14.0/firebase-app.js"></script>
-  <script src="/__/firebase/7.14.0/firebase-auth.js"></script>
-  <script src="/__/firebase/7.14.0/firebase-storage.js"></script>
-  <script src="/__/firebase/7.14.0/firebase-messaging.js"></script>
-  <script src="/__/firebase/7.14.0/firebase-firestore.js"></script>
-  <script src="/__/firebase/7.14.0/firebase-performance.js"></script>
-  <script src="/__/firebase/init.js"></script>
-  <script src="scripts/main.js"></script> -->
-
 </body>
 </html>

@@ -1,50 +1,14 @@
 <ons-page>
-  
-  <!-- <div id="app"></div> -->
-
-
-  <!-- <script type="text/babel">
-
-    class App extends React.Component {
-
-        render() {
-            return (
-                <div>HEJ
-                    <p>{ Math.random() }</p>
-                </div>
-            );
-        }
-    }
-    ReactDOM.render(<App />, document.getElementById('app'));
-</script> -->
-
-  
-  <!-- <script>
-    ons.ready(function () {
-        var list = document.getElementById('repeatlist');
-        list.delegate = {
-          createItemContent: function (index) {
-            // Return a DOM element here.
-            return ons.createElement( '<ons-list-item>Item'+index+'</ons-list-item>');
-          },
-          countItems: function () {
-            // Return the number of items here.
-            return 100;
-          },
-          calculateItemHeight: function (index) {
-            // Optional: return the height of the item at position `index`.
-            // This can enhance calculations and allow better scrolling.
-            return 60;
-          },
-          destroyItem: function (index, element) {
-            // Remove event listeners, etc. here to avoid memory leaks.
-          }
-        };}) -->
-  <!-- </script> -->
-  
-
-  <div>
-    <h1 style="text-align: center;">Shopping Page</h1>
+  <div class="form-group">
+    <textarea class="form-control" rows="30" id="shoppingList" placeholder="What do you need from the store?" style="font-family: Indie Flower"></textarea>
   </div>
+  <button onclick="getElementFunction()">GEt element</button>
+
+<script>
+  function getElementFunction() {
+    alert(document.getElementById("shoppingList").value)
+  }
+
+</script>
 
 </ons-page>
