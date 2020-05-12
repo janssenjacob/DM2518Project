@@ -156,7 +156,7 @@ function writeUserData(user) {
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     console.log('in');
-    console.log(user);
+    // console.log(user);
     uid = user.uid;
   } else {console.log('out')}
 });
