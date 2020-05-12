@@ -137,6 +137,7 @@ function handleLogOut() {
     console.log(error);
     // An error happened.
   });
+}
 
 function writeUserData(user) {
   var newUser = {
