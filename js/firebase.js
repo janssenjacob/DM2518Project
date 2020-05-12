@@ -138,6 +138,15 @@ function handleLogOut() {
     // An error happened.
   });
 
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    console.log('in');
+    console.log(user);
+    uid = user.uid;
+  } else {console.log('out')}
+})
+}
+
 function writeUserData(user) {
   var newUser = {
     id: uid,
@@ -151,11 +160,3 @@ function writeUserData(user) {
   };
   firebase.database().ref('Users/'+uid).set(newUser);
 }
-
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    console.log('in');
-    console.log(user);
-    uid = user.uid;
-  } else {console.log('out')}
-});
