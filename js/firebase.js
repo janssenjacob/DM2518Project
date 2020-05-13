@@ -120,9 +120,9 @@ function handleGoogle() {
 
 function handleReset() {
   var email = document.getElementById('inputEmail').value;
-  firebase.auth().sendPasswordResetEmail(email).then(function() {
+  firebase.auth().sendPasswordResetEmail(email).then(function () {
     alert('An email has sent to your email address.');
-  }).catch(function(error) {
+  }).catch(function (error) {
     var errorCode = error.code;
     var errorMessage = error.message;
     console.log(error);
@@ -130,20 +130,20 @@ function handleReset() {
 }
 
 function handleLogOut() {
-  firebase.auth().signOut().then(function() {
+  firebase.auth().signOut().then(function () {
     window.location = 'login.html';
-  }).catch(function(error) {
+  }).catch(function (error) {
     alert('An error occurred.')
     console.log(error);
     // An error happened.
   });
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    console.log('in');
-    console.log(user);
-    uid = user.uid;
-  } else {console.log('out')}
-})
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      console.log('in');
+      console.log(user);
+      uid = user.uid;
+    } else { console.log('out') }
+  })
 }
 
 function writeUserData(user) {
@@ -154,18 +154,18 @@ function writeUserData(user) {
     picture: user.photoURL,
     List: '',
   };
-  firebase.database().ref('Users/'+uid).set(newUser);
+  firebase.database().ref('Users/' + uid).set(newUser);
 }
 
-firebase.auth().onAuthStateChanged(function(user) {
+firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     // console.log('in');
     // console.log(user);
     uid = user.uid;
-    firebase.database().ref('Users/'+uid+'/Friends').once('value').then(function (snapshot) {
+    firebase.database().ref('Users/' + uid + '/Friends').once('value').then(function (snapshot) {
       snapshot.forEach(child => {
         displayFriends(child.val());
       });
     });
-  } else {console.log('out')}
+  } else { console.log('out') }
 });
