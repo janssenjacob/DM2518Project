@@ -9,7 +9,7 @@
       <div class="left">
         <ons-back-button onclick="clearPage()"></ons-back-button>
       </div>
-        <ons-button class="right" style="text-align: center;" id="likeButton" onclick="changeLikeState()">Liked</ons-button>
+        <ons-button class="right" style="text-align: center;" id="likeButton" onclick="changeLikeState()">Like</ons-button>
     </ons-toolbar>
     <h2 style="text-align: center;"  id="r-title"></h2>
     <br>
@@ -18,22 +18,47 @@
     </ons-list>
 
     <script>
+        var fb_uid = 'DtUdtlcPMoOFXd1D4EgjuJ6Y2hp1';
         var clearPage = ()=>{
             document.getElementById('detailList').innerHTML = '';
         }
         
-        var changeLikeState = ()=>{
+        function changeLikeState(){
           var button = document.getElementById('likeButton').innerHTML;
-          console.log(button);
-          var database = firebase.database();
+          var title = document.getElementById('r-title').innerHTML;
           //check the current state and change it to the other
           if(button === 'Liked'){
+            writeInUnlike(title,fb_uid);
             ons.notification.alert('Do you really want to unlike this?')
           }
           if(button === 'Like'){
             //set the data of the user to Liked and add the recipe to users info
+            // console.log('try to update the database')
+            writeInLiked(title,fb_uid);
           }
         }
+
+        function writeInLiked(title,user) {
+          // var ingreds = document.getElementsByClassName('detail-ingreds');
+          // var methods = document.getElementsByClassName('detail-methods');
+          // var ingArray = new Array;
+          // var mtdArray = new Array;
+          // var count = 0;
+          // Write the new post's data simultaneously in the posts list and the user's post list.
+          var updates = {};
+          updates['/Users/'+user+'/Liked/'+title] = "";
+          firebase.database().ref().update(updates);
+          document.getElementById('likeButton').innerHTML = 'Liked';
+        }
+
+        function writeInUnlike(title,user) {
+          console.log('/Users/'+user+'/Liked/'+title);
+          // Write the new post's data simultaneously in the posts list and the user's post list.
+          firebase.database().ref('/Users/'+user+'/Liked/'+title).set(null);
+          document.getElementById('likeButton').innerHTML = 'Like';
+        }
+
+
 
     </script>
   </ons-page>
