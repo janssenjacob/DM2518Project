@@ -58,10 +58,6 @@
             text-align: center;
         }
 
-        #haha {
-            display: inline-block;
-        }
-
         #chinese, #easter, #mothers, #slowcook, #soup, #spring, #vegan {
             display: inline-block;
         }
@@ -80,13 +76,21 @@
             }
 
         .fa {
-            font-size: 50px;
             cursor: pointer;
             user-select: none;
         }
         
+        .fa-cutlery {
+            position: absolute;
+            right: 20px;
+  
+        }
         .fa:hover {
             color: darkblue;
+        }
+
+        .card:hover{
+            top: -5px;
         }
     </style>
   
@@ -96,10 +100,10 @@
     <script>
 
     /* This will go into a js file when that shit is working again */
-/* function myFunction(x) {
-x.classList.toggle("fa fa-heart-o");
+function myFunction(x) {
+x.classList.toggle("fa fa-heart");
 }
-*/
+
 // EXTRACTING
 const myRef = firebase.database().ref("RecipeList");
 const query = myRef.orderByKey();
@@ -150,8 +154,9 @@ query.once("value")
                 //var tmpObj=document.createElement("div");
                 //tmpObj.innerHTML='<div class="card">';
                 container.innerHTML = ('<div class="card">' + pictures[i] + '<div class="card-body">' +
-                '<h5 class="card-title">' + names[i] + '</h5>' + '</div>' );
+                '<h5 class="card-title">' + names[i] + '</h5>' + '</div>' + '<i class="fa fa-heart-o fa-pull-left" aria-hidden="true" onClick=myFunction()></i>'+'<i class="fa fa-cutlery" aria-hidden="true"></i>' );
                 //container.appendTo('<div class="card">' + pictures.join("") + '</div>');
+            
                 $(document).ready(function(){
                     $("img").addClass("card-img-top");
                 });
@@ -182,9 +187,9 @@ query.once("value")
 });
 
     //LIKE/COOKED FUNCTIONS
-/*
+
     //BUTTON
-    const container = docuemt.getElementsByName('container');
+    const container = docuemt.getElementsByName('chinese0');
 
     for (const item of container) {
         const button = document.createElement('button');
@@ -193,7 +198,7 @@ query.once("value")
         item.append(button);
     }
 
-*/
+
     </script>
     
     <script src="home.js"></script>
