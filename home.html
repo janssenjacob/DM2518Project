@@ -1,7 +1,68 @@
 <ons-page>
+    <head>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
     <!-- Set up the Home Page -->
-    <div id="HomePage">
-     <!-- <h1 style="text-align: center;">Home Page</h1> -->
-    </div>
-    <script src="react/button.js" type="text/babel"> </script>
+        <div>
+            <h1 style="text-align: center;">Home Page</h1>
+        </div>
+        <div id="chinese"></div>
+        <div id="easter"></div>
+        <div id="mothers"></div>
+        <div id="slowcook"></div>
+        <div id="soup"></div>
+        <div id="spring"></div>
+        <div id="vegan"></div>
+
+  
+    </head>
+
+    <body>
+    <script>
+    /* This will go into a js file when that shit is working again */
+   
+
+// EXTRACTING
+const myRef = firebase.database().ref("RecipeList");
+const query = myRef.orderByKey();
+query.once("value")
+  .then(function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+        // Key is the category of food: chinese, mother, slowcook etc.
+        var key = childSnapshot.key;
+        console.log(key);
+        // childData is the actual content of the children, in type object
+        var childData = childSnapshot.val();
+        console.log(childData);
+        // Recieve upper boundry
+        console.log(childData.length); 
+        // Loop to get objects separetely and extract image information and title information
+        let pictures = [];
+        let names = [];
+        //var u = 1;
+        //var v = 1000;
+        for (let i = 0; i <= (childData.length - 1); i++){
+            console.log(key);
+            var extractData = childData[i];
+            //console.log(childData)
+            let extractPicture = `<img src="http://${extractData.Img}">`;
+            console.log(extractPicture);
+            pictures.push(extractPicture);
+            let extractName = `<div>${extractData.Title}</div>`;
+            console.log(extractName);
+            names.push(extractName);
+            
+            //PUBLISHING IMAGES
+            //document.getElementById(`pictures${key}`).innerHTML = names + pictures
+            document.getElementById(`${key}`).innerHTML = pictures;
+        }
+    
+  });
+});
+
+
+    </script>
+    
+    <script src="home.js"></script>
+    </body>
 </ons-page>
+

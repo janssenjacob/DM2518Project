@@ -184,6 +184,7 @@
       }
   </script>
   <script>
+    var fb_uid = 'DtUdtlcPMoOFXd1D4EgjuJ6Y2hp1';
     document.addEventListener('init', function(event) {
       //check the database to see if it's liked by current user
     var page = event.target;
@@ -191,17 +192,28 @@
           //set the Like button to be "Liked" or "Like"
             page.querySelector('#r-title').innerHTML = page.data.title;
             page.querySelector('#r-img').innerHTML = '<img style="width:100%" src="https://'+page.data.img+'" alt="'+ page.data.title+'Picture">';
+            //check if the user has liked this recipe
+            var ref = firebase.database().ref('Users/'+fb_uid+'/Liked/'+page.data.title);
+            ref.once("value").then(function(snapshot) {
+              console.log('checking existence');
+                if(snapshot.exists()){// if true
+                  console.log('exist');
+                  page.querySelector('#likeButton').innerHTML = 'Liked';
+                }else{
+                  page.querySelector('#likeButton').innerHTML = 'Like';
+                }  
+              });
             var Methods = page.data.methods;
             var Ingreds = page.data.ingredients;
             var detailList = document.getElementById('detailList');
             detailList.appendChild(ons.createElement('<ons-list-header>Ingredients</ons-list-header>'));
             for(i=0;i<Ingreds.length;i++){
-                detailList.appendChild(ons.createElement('<ons-list-item>'+Ingreds[i]+'</ons-list-item>'))
+                detailList.appendChild(ons.createElement('<ons-list-item class="detail-ingreds">'+Ingreds[i]+'</ons-list-item>'))
             }
             // detailList.appendChild(ons.createElement('<br>'));
             detailList.appendChild(ons.createElement('<ons-list-header>Methods</ons-list-header>'));
             for(i=0;i<Methods.length;i++){
-                detailList.appendChild(ons.createElement('<ons-list-item>'+Methods[i]+'</ons-list-item>'))
+                detailList.appendChild(ons.createElement('<ons-list-item class="detail-methods">'+Methods[i]+'</ons-list-item>'))
             }
         }
 
