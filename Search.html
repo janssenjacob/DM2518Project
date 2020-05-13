@@ -1,5 +1,5 @@
 <ons-page style="overflow: hidden;">
-  <script src="react/button.js"></script>
+  <script>var fb_uid = 'DtUdtlcPMoOFXd1D4EgjuJ6Y2hp1';</script>
   <style>
     .fixedElement {
       z-index: 999;
@@ -21,14 +21,27 @@
     const changeSearchType = (type)=>{
       var cur = document.getElementById('dropdownMenuButton').innerHTML;
       // console.log(cur);
-      if(cur === 'All')
+      if(cur === 'All'){
         document.getElementById('All').classList.remove('active');
-      else if(cur === 'Cooked')
+        updateSearch("");
+      }else if(cur === 'Cooked'){
         document.getElementById('Cooked').classList.remove('active');
-      else
+
+      }else{
         document.getElementById('Liked').classList.remove('active');
+      }
+        
+        //set cur type to active,
       document.getElementById(type).classList.add('active');
       document.getElementById('dropdownMenuButton').innerHTML = type;
+      document.getElementsByTagName('ons-search-input').value = "";
+      if(cur === 'All'){
+        
+      }else if(cur === 'Liked'){
+
+      }else{
+
+      }
     }
 
     function showDetail(page,item){
@@ -46,7 +59,7 @@
   <form action="" method="GET" class="fixedElement"> 
       <ons-search-input 
       placeholder="Search Recipe"
-      onchange="updateSearch(this.value)" 
+      onchange="updateSearch(this.value,document.getElementById('dropdownMenuButton').innerHTML)" 
       modifier = "material"
       style="width: 70%;"
       ></ons-search-input>
@@ -57,8 +70,8 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <a id="All" class="dropdown-item" href="#" onclick="changeSearchType('All')">All</a>
-          <a id="Cooked" class="dropdown-item" href="#" onclick="changeSearchType('Cooked')">Cooked</a>
-          <a id="Liked" class="dropdown-item" href="#" onclick="changeSearchType('Liked')">Liked</a>
+          <!-- <a id="Cooked" class="dropdown-item" href="#" onclick="changeSearchType('Cooked')">Cooked</a> -->
+          <!-- <a id="Liked" class="dropdown-item" href="#" onclick="changeSearchType('Liked')">Liked</a> -->
         </div>
       </div>
     <input type="button" onclick="updateSearch()" style="position: absolute; left: -9999px"/>
@@ -72,14 +85,16 @@
   <script>
     var tempList = "";
     var Chinese = "";
-    var Spring = "";
-    var Vegan = "";
-    var Mother = "";
-    var Easter = "";
-    var SlowCook = "";
+    var ChineseLiked = "";
+    // var Spring = "";
+    // var Vegan = "";
+    // var Mother = "";
+    // var Easter = "";
+    // var SlowCook = "";
     var RecipeList = firebase.database().ref('RecipeList');
       RecipeList.on('value', function(snapshot) {
         Chinese = snapshot.val().chinese;
+        ChineseLiked = new Array;
         // Easter = snapshot.val().easter;
         // Spring = snapshot.val().spring;
         // Soup = snapshot.val().soup;
@@ -88,7 +103,9 @@
         // Mother = snapshot.val().mothers;
         // console.log(Chinese[0].Img);
         tempList = Chinese;
-        // console.log(Mother[0]);
+        var database = firebase.database();
+        //get ChineseLiked
+        var count = 0;
         (()=>{
         var list = document.getElementById('recipelist');
         list.delegate = {
@@ -119,16 +136,34 @@
             // Remove event listeners, etc. here to avoid memory leaks.
           }
         };})()
+
+        // for(i=0;i<Chinese.length;i++){
+        //   var title = Chinese[i].Title;
+        //   if(title.indexOf('&')!=-1)
+        //     title = checkAndNote(title);
+        //   database.ref('Users/'+fb_uid+'/Liked/'+title)
+        //   .once("value").then(function(snapshot) {
+        //     if(snapshot.exists()){// if true
+        //       console.log(i);
+        //       console.log(Chinese[i]);
+        //       ChineseLiked[count++] = Chinese[i];
+        //     }
+        //   });
+        // }
       });
     
-      const updateSearch = (msg)=>{
-        // ons.notification.alert("search :"+msg);
+      const updateSearch = (msg,type)=>{
         tempList = new Array;
         var count = 0;
-        for(i=0;i<Chinese.length;i++){
-          if(Chinese[i].Title.indexOf(msg)!=-1)
-            tempList[count++] = Chinese[i]
+        if(type === "All"){
+          for(i=0;i<Chinese.length;i++){
+            if(Chinese[i].Title.indexOf(msg)!=-1)
+              tempList[count++] = Chinese[i]
+          }
+        }else if(type === 'Liked'){
+
         }
+        
         if(tempList.length === 0){
         var list = document.getElementById('recipelist');
         list.delegate = {
@@ -184,7 +219,17 @@
       }
   </script>
   <script>
-    var fb_uid = 'DtUdtlcPMoOFXd1D4EgjuJ6Y2hp1';
+
+
+    function checkAndNote(normaltitle){
+      var index = normaltitle.indexOf('&');
+      var temp1 = normaltitle.substring(0,index+1);
+      var temp2 = normaltitle.substring(index+1,normaltitle.length);
+      temp1 = temp1 + "amp;";
+      normaltitle = temp1+temp2;
+      return normaltitle;
+    }
+    
     document.addEventListener('init', function(event) {
       //check the database to see if it's liked by current user
     var page = event.target;
@@ -192,8 +237,11 @@
           //set the Like button to be "Liked" or "Like"
             page.querySelector('#r-title').innerHTML = page.data.title;
             page.querySelector('#r-img').innerHTML = '<img style="width:100%" src="https://'+page.data.img+'" alt="'+ page.data.title+'Picture">';
+            var normaltitle = page.data.title;
+            if(normaltitle.indexOf('&')!=-1)
+              normaltitle = checkAndNote(normaltitle);  
             //check if the user has liked this recipe
-            var ref = firebase.database().ref('Users/'+fb_uid+'/Liked/'+page.data.title);
+            var ref = firebase.database().ref('Users/'+fb_uid+'/Liked/'+normaltitle);
             ref.once("value").then(function(snapshot) {
               console.log('checking existence');
                 if(snapshot.exists()){// if true
