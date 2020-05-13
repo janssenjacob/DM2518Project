@@ -2,7 +2,6 @@
     <head>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
     <!-- Set up the Home Page -->
-<<<<<<< HEAD
         <div>
             <h1 style="text-align: center;">Home Page</h1>
         </div>
@@ -13,14 +12,29 @@
         <div id="soup"></div>
         <div id="spring"></div>
         <div id="vegan"></div>
+        
+    <style>
+        .fa {
+            font-size: 50px;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .fa:hover {
+            color: darkblue;
+        }
+    </style>
 
+    <i onclick="myFunction(this)" class="fa fa-heart-o"></i>
   
     </head>
 
     <body>
     <script>
     /* This will go into a js file when that shit is working again */
-   
+    function myFunction(x) {
+    x.classList.toggle("fa fa-heart-o");
+    }
 
 // EXTRACTING
 const myRef = firebase.database().ref("RecipeList");
@@ -36,29 +50,31 @@ query.once("value")
         console.log(childData);
         // Recieve upper boundry
         console.log(childData.length); 
-        // Loop to get objects separetely and extract image information and title information
+        
         let pictures = [];
         let names = [];
-        //var u = 1;
-        //var v = 1000;
+        // Loop to get objects separetely and extract image information and title information
         for (let i = 0; i <= (childData.length - 1); i++){
-            console.log(key);
             var extractData = childData[i];
             //console.log(childData)
+
             let extractPicture = `<img src="http://${extractData.Img}">`;
-            console.log(extractPicture);
+            //console.log(extractPicture);
             pictures.push(extractPicture);
-            let extractName = `<div>${extractData.Title}</div>`;
-            console.log(extractName);
+
+            let extractName = `<div>${extractData.Title}</div>`
+            //console.log(extractName);
             names.push(extractName);
             
             //PUBLISHING IMAGES
-            //document.getElementById(`pictures${key}`).innerHTML = names + pictures
-            document.getElementById(`${key}`).innerHTML = pictures;
+            //document.getElementById(`pictures${key}`).innerHTML = names.join("") + pictures.join("")
+            document.getElementById(`${key}`).innerHTML = pictures.join("")
         }
-    
   });
 });
+
+    //LIKE/COOKED FUNCTIONS
+
 
 
     </script>
@@ -67,10 +83,3 @@ query.once("value")
     </body>
 </ons-page>
 
-=======
-    <div id="HomePage">
-     <!-- <h1 style="text-align: center;">Home Page</h1> -->
-    </div>
-    <script src="react/button.js" type="text/babel"> </script>
-</ons-page>
->>>>>>> 92b0b0a3ef9f68eb745b84b0affb5054fe5be8dc
