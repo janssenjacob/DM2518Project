@@ -152,9 +152,6 @@ function writeUserData(user) {
     username: user.displayName,
     email: user.email,
     picture: user.photoURL,
-    Friends: '',
-    Liked: '',
-    Cooked: '',
     List: '',
   };
   firebase.database().ref('Users/'+uid).set(newUser);
@@ -162,8 +159,8 @@ function writeUserData(user) {
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    console.log('in');
-    console.log(user);
+    // console.log('in');
+    // console.log(user);
     uid = user.uid;
     firebase.database().ref('Users/'+uid+'/Friends').once('value').then(function (snapshot) {
       snapshot.forEach(child => {
