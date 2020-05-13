@@ -18,30 +18,21 @@
       document.getElementById('dropdownMenuButton').innerHTML = 'All';
       document.getElementById('All').classList.add('active');
     })()
+
     const changeSearchType = (type)=>{
       var cur = document.getElementById('dropdownMenuButton').innerHTML;
-      // console.log(cur);
+      console.log(cur);
       if(cur === 'All'){
         document.getElementById('All').classList.remove('active');
-        updateSearch("");
-      }else if(cur === 'Cooked'){
-        document.getElementById('Cooked').classList.remove('active');
-
-      }else{
+      }
+      else if(cur === 'Liked'){
         document.getElementById('Liked').classList.remove('active');
       }
-        
+      updateSearch("",type);
         //set cur type to active,
       document.getElementById(type).classList.add('active');
       document.getElementById('dropdownMenuButton').innerHTML = type;
       document.getElementsByTagName('ons-search-input').value = "";
-      if(cur === 'All'){
-        
-      }else if(cur === 'Liked'){
-
-      }else{
-
-      }
     }
 
     function showDetail(page,item){
@@ -56,7 +47,7 @@
   </script>
   
   <!-- Search whatever and press enter -->
-  <form action="" method="GET" class="fixedElement"> 
+  <form class="fixedElement"> 
       <ons-search-input 
       placeholder="Search Recipe"
       onchange="updateSearch(this.value,document.getElementById('dropdownMenuButton').innerHTML)" 
@@ -74,7 +65,6 @@
           <!-- <a id="Liked" class="dropdown-item" href="#" onclick="changeSearchType('Liked')">Liked</a> -->
         </div>
       </div>
-    <input type="button" onclick="updateSearch()" style="position: absolute; left: -9999px"/>
   </form>
   <div style="padding-top: 50px;overflow: auto;">
     <ons-list>
@@ -85,7 +75,8 @@
   <script>
     var tempList = "";
     var Chinese = "";
-    var ChineseLiked = "";
+    var ChineseLiked = [];
+    var count = 0;
     // var Spring = "";
     // var Vegan = "";
     // var Mother = "";
@@ -94,7 +85,6 @@
     var RecipeList = firebase.database().ref('RecipeList');
       RecipeList.on('value', function(snapshot) {
         Chinese = snapshot.val().chinese;
-        ChineseLiked = new Array;
         // Easter = snapshot.val().easter;
         // Spring = snapshot.val().spring;
         // Soup = snapshot.val().soup;
@@ -105,7 +95,6 @@
         tempList = Chinese;
         var database = firebase.database();
         //get ChineseLiked
-        var count = 0;
         (()=>{
         var list = document.getElementById('recipelist');
         list.delegate = {
@@ -137,21 +126,38 @@
           }
         };})()
 
-        // for(i=0;i<Chinese.length;i++){
+        //Adding Liked List, but cannot solve async problem
+        
+        // for(let i=0;i<Chinese.length;i++){
         //   var title = Chinese[i].Title;
         //   if(title.indexOf('&')!=-1)
         //     title = checkAndNote(title);
+        //   // selectLiked(i,title);
         //   database.ref('Users/'+fb_uid+'/Liked/'+title)
-        //   .once("value").then(function(snapshot) {
-        //     if(snapshot.exists()){// if true
-        //       console.log(i);
-        //       console.log(Chinese[i]);
-        //       ChineseLiked[count++] = Chinese[i];
-        //     }
-        //   });
+        //   .once('value', snapshot => {
+        //       if (snapshot.exists()){
+        //           console.log(i);
+        //           ChineseLiked[count++] = Chinese[i];
+        //       }
+        //   })
         // }
+        // var temp = ChineseLiked;
+        // console.log(ChineseLiked);
+        // console.log(ChineseLiked.length);
+        // console.log(tempList);
       });
-    
+
+      function selectLiked(index,title){
+        
+          // .once("value").then(function(snapshot) {
+          //   if(snapshot.exists()){// if true
+          //     ChineseLiked[count++] = Chinese[index];
+          //   }
+          // });
+      }
+
+      
+
       const updateSearch = (msg,type)=>{
         tempList = new Array;
         var count = 0;
@@ -160,9 +166,14 @@
             if(Chinese[i].Title.indexOf(msg)!=-1)
               tempList[count++] = Chinese[i]
           }
-        }else if(type === 'Liked'){
-
         }
+        // else if(type === 'Liked'){
+        //   for(i=0;i<ChineseLiked.length;i++){
+        //     if(ChineseLiked[i].Title.indexOf(msg)!=-1)
+        //       tempList[count++] = ChineseLiked[i]
+        //   }
+        // }
+        console.log(tempList);
         
         if(tempList.length === 0){
         var list = document.getElementById('recipelist');
@@ -175,8 +186,6 @@
             return 1;
           },
           calculateItemHeight: function (index) {
-            // Optional: return the height of the item at position `index`.
-            // This can enhance calculations and allow better scrolling.
             return 0;
           },
           destroyItem: function (index, element) {
@@ -187,9 +196,6 @@
           var list = document.getElementById('recipelist');
         list.delegate = {
           createItemContent: function (index) {
-            // Return a DOM element here.
-            // return ons.createElement( '<ons-list-item id="listitem'+index+'">Item'+index+'</ons-list-item>');
-            // console.log(tempList[index].Img);
             var listitem = '<ons-list-item id="'+index+'" onclick="showDetail(\'detail.html\',this)">'+
               '<div class="left"> '+
               '<img class="list-item__thumbnail"src="https://'+tempList[index].Img+'">'+
@@ -198,7 +204,6 @@
               ' <span class="list-item__title">'+tempList[index].Title+'</span><span class="list-item__subtitle">'+tempList[index].Skill+'</span>'+
               '</div>'+
               '</ons-list-item>';
-              
             return ons.createElement(listitem);
           },
           countItems: function () {
