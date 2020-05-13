@@ -99,9 +99,7 @@
         var list = document.getElementById('recipelist');
         list.delegate = {
           createItemContent: function (index) {
-            // Return a DOM element here.
-            // return ons.createElement( '<ons-list-item id="listitem'+index+'">Item'+index+'</ons-list-item>');
-            // console.log(Chinese[index].Img);
+
             var listitem = '<ons-list-item id="'+index+'" onclick="showDetail(\'detail.html\',this)">'+
               '<div class="left"> '+
               '<img class="list-item__thumbnail"src="https://'+tempList[index].Img+'">'+
