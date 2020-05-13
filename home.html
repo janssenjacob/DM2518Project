@@ -1,19 +1,84 @@
 <ons-page>
     <head>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-    <!-- Set up the Home Page -->
-        <div>
+        <!-- Set up the Home Page -->
+        <!-- <div>
             <h1 style="text-align: center;">Home Page</h1>
+        </div> -->
+        <div class="container" id="grid">
+            <div class="card-columns" id="card-group">
+                <!-- Don't know how to do create div in javascript -->
+                <div id="chinese0"></div>
+                <div id="chinese1"></div>
+                <div id="chinese2"></div>
+                <div id="chinese3"></div>
+                <div id="chinese4"></div>
+                <div id="chinese5"></div>
+                <div id="chinese6"></div>
+                <div id="chinese7"></div>
+                <div id="chinese8"></div>
+                <div id="chinese9"></div>
+                <div id="chinese10"></div>
+                <div id="chinese11"></div>
+                <div id="chinese12"></div>
+                <div id="chinese13"></div>
+                <div id="chinese14"></div>
+                <div id="chinese15"></div>
+                <div id="chinese16"></div>
+                <div id="chinese17"></div>
+                <div id="chinese18"></div>
+                <div id="chinese19"></div>
+                <div id="chinese20"></div>
+                <div id="chinese21"></div>
+                <div id="chinese22"></div>
+                <div id="chinese23"></div>
+                <div id="chinese24"></div>
+                <div id="chinese25"></div>
+                <!--<div id="easter"></div>
+                <div id="mothers"></div>
+                <div id="slowcook"></div>
+                <div id="soup"></div>
+                <div id="spring"></div>
+                <div id="vegan"></div>-->
+            </div>
         </div>
-        <div id="chinese"></div>
-        <div id="easter"></div>
-        <div id="mothers"></div>
-        <div id="slowcook"></div>
-        <div id="soup"></div>
-        <div id="spring"></div>
-        <div id="vegan"></div>
+        <!-- <div id="chinese"></div>
+            <div id="easter"></div>
+            <div id="mothers"></div>
+            <div id="slowcook"></div>
+            <div id="soup"></div>
+            <div id="spring"></div>
+            <div id="vegan"></div>
+        </div> -->
+
+    </div>
         
     <style>
+        #grid {
+            text-align: center;
+        }
+
+        #haha {
+            display: inline-block;
+        }
+
+        #chinese, #easter, #mothers, #slowcook, #soup, #spring, #vegan {
+            display: inline-block;
+        }
+
+        .btn {
+            background-color: #555;
+            color: white;
+            font-size: 16px;
+            padding: 12px 24px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            display: block;
+            margin: 0 auto;
+            }
+
         .fa {
             font-size: 50px;
             cursor: pointer;
@@ -24,20 +89,18 @@
             color: darkblue;
         }
     </style>
-
-    <i onclick="myFunction(this)" class="fa fa-heart-o"></i>
   
     </head>
 
     <body>
     <script>
-    /* This will go into a js file when that shit is working again */
-    function myFunction(x) {
-    x.classList.toggle("fa fa-heart-o");
-    }
 
+    /* This will go into a js file when that shit is working again */
+/* function myFunction(x) {
+x.classList.toggle("fa fa-heart-o");
+}
+*/
 // EXTRACTING
-<<<<<<< HEAD
 const myRef = firebase.database().ref("RecipeList");
 const query = myRef.orderByKey();
 query.once("value")
@@ -54,6 +117,7 @@ query.once("value")
         
         let pictures = [];
         let names = [];
+        var old = 0;
         // Loop to get objects separetely and extract image information and title information
         for (let i = 0; i <= (childData.length - 1); i++){
             var extractData = childData[i];
@@ -62,60 +126,74 @@ query.once("value")
             let extractPicture = `<img src="http://${extractData.Img}">`;
             //console.log(extractPicture);
             pictures.push(extractPicture);
-
             let extractName = `<div>${extractData.Title}</div>`
             //console.log(extractName);
             names.push(extractName);
-            
+           
             //PUBLISHING IMAGES
-            //document.getElementById(`pictures${key}`).innerHTML = names.join("") + pictures.join("")
-            document.getElementById(`${key}`).innerHTML = pictures.join("")
-        }
-  });
-});
-=======
-// const myRef = firebase.database().ref("RecipeList");
-// const query = myRef.orderByKey();
-// query.once("value")
-//   .then(function(snapshot) {
-//     snapshot.forEach(function(childSnapshot) {
-//         // Key is the category of food: chinese, mother, slowcook etc.
-//         var key = childSnapshot.key;
-//         console.log(key);
-//         // childData is the actual content of the children, in type object
-//         var childData = childSnapshot.val();
-//         console.log(childData);
-//         // Recieve upper boundry
-//         console.log(childData.length); 
-//         // Loop to get objects separetely and extract image information and title information
-//         let pictures = [];
-//         let names = [];
-//         //var u = 1;
-//         //var v = 1000;
-//         for (let i = 0; i <= (childData.length - 1); i++){
-//             console.log(key);
-//             var extractData = childData[i];
-//             //console.log(childData)
-//             let extractPicture = `<img src="http://${extractData.Img}">`;
-//             console.log(extractPicture);
-//             pictures.push(extractPicture);
-//             let extractName = `<div>${extractData.Title}</div>`;
-//             console.log(extractName);
-//             names.push(extractName);
+            //document.getElementById(`${key}`).innerHTML = names.join("") + pictures.join("")
+            //for (let j = 0; j <= (pictures.length - 1); j++){
+            // var joining = pictures.join("")
+            //document.getElementById(`${key}`).innerHTML = pictures.join("")
+            //console.log(extractPicture.split(","))
+            //var separate = extractPicture.split(",")
+            //console.log(separate.length)
+        //} 
+            //count = count + 1;
             
-//             //PUBLISHING IMAGES
-//             //document.getElementById(`pictures${key}`).innerHTML = names + pictures
-//             document.getElementById(`${key}`).innerHTML = pictures;
-//         }
+            //document.getElementById(`${key}`).innerHTML = pictures.join("")
+
+            // pictures = pictures.join("")
+        
+            var container = document.getElementById(`${key}`+`${i}`);
+            childSnapshot.forEach(function() {
+                //var tmpObj=document.createElement("div");
+                //tmpObj.innerHTML='<div class="card">';
+                container.innerHTML = ('<div class="card">' + pictures[i] + '<div class="card-body">' +
+                '<h5 class="card-title">' + names[i] + '</h5>' + '</div>' );
+                //container.appendTo('<div class="card">' + pictures.join("") + '</div>');
+                $(document).ready(function(){
+                    $("img").addClass("card-img-top");
+                });
+            })
+            
+            
+            
+/*
+            var container = document.getElementById('items'); //any element to be fully replaced
+            if(container.outerHTML) { //if outerHTML is supported
+                childSnapshot.forEach(function() {
+                //container.append('<div class="card">' + pictures.join("") + '</div>');
+                container.outerHTML='<div class="card">' + pictures.join("") + '</div>';
+            })}
+            
+            else{ //if outerHTML is not supported, there is a weird but crossbrowsered trick
+                var tmpObj=document.createElement("div");
+                tmpObj.innerHTML='<div class="card">';
+                ObjParent=Obj.parentNode; //Okey, element should be parented
+                ObjParent.replaceChild(tmpObj,Obj); //here we placing our temporary data instead of our target, so we can find it then and replace it into whatever we want to replace to
+                ObjParent.innerHTML=ObjParent.innerHTML.replace('<div class="card">' + pictures.join("") + '</div>',str);
+            }
+*/        
     
-//   });
-// });
->>>>>>> d51e77e05b691bce623b891d9b5400729ee3d26b
+        
+    };
+});
+});
 
     //LIKE/COOKED FUNCTIONS
+/*
+    //BUTTON
+    const container = docuemt.getElementsByName('container');
 
+    for (const item of container) {
+        const button = document.createElement('button');
+        button.innerTest = 'Button';
+        button.className = 'btn'
+        item.append(button);
+    }
 
-
+*/
     </script>
     
     <script src="home.js"></script>
