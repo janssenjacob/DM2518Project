@@ -1,5 +1,13 @@
 <ons-page style="overflow: hidden;">
-  <script>var fb_uid = 'DtUdtlcPMoOFXd1D4EgjuJ6Y2hp1';</script>
+  <script>
+    var fb_uid = 'undefined';    
+    firebase.auth().onAuthStateChanged((user)=>{
+      fb_uid = user.uid;
+      console.log(fb_uid);
+    });
+    
+
+  </script>
   <style>
     .fixedElement {
       z-index: 999;
@@ -62,7 +70,7 @@
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <a id="All" class="dropdown-item" href="#" onclick="changeSearchType('All')">All</a>
           <!-- <a id="Cooked" class="dropdown-item" href="#" onclick="changeSearchType('Cooked')">Cooked</a> -->
-          <!-- <a id="Liked" class="dropdown-item" href="#" onclick="changeSearchType('Liked')">Liked</a> -->
+          <a id="Liked" class="dropdown-item" href="#" onclick="changeSearchType('Liked')">Liked</a>
         </div>
       </div>
   </form>
@@ -75,7 +83,7 @@
   <script>
     var tempList = "";
     var Chinese = "";
-    var ChineseLiked = [];
+    var ChineseLiked = new Array;
     var count = 0;
     // var Spring = "";
     // var Vegan = "";
@@ -126,35 +134,41 @@
 
         //Adding Liked List, but cannot solve async problem
         
-        // for(let i=0;i<Chinese.length;i++){
-        //   var title = Chinese[i].Title;
-        //   if(title.indexOf('&')!=-1)
-        //     title = checkAndNote(title);
-        //   // selectLiked(i,title);
-        //   database.ref('Users/'+fb_uid+'/Liked/'+title)
-        //   .once('value', snapshot => {
-        //       if (snapshot.exists()){
-        //           console.log(i);
-        //           ChineseLiked[count++] = Chinese[i];
-        //       }
-        //   })
-        // }
-        // var temp = ChineseLiked;
-        // console.log(ChineseLiked);
-        // console.log(ChineseLiked.length);
-        // console.log(tempList);
+        for(let i=0;i<Chinese.length;i++){
+          var title = Chinese[i].Title;
+          if(title.indexOf('&')!=-1)
+            title = checkAndNote(title);
+          // getData(i,title,res=>{
+          //   res.then(prom=>{
+          //     if(prom!=null){
+          //       ChineseLiked[count++] = prom;
+          //       console.log(ChineseLiked);
+          //       console.log(ChineseLiked.length);
+          //     }
+          //   })
+          // })
+          selectLiked(i,title);
+        }
       });
 
       function selectLiked(index,title){
-        
-          // .once("value").then(function(snapshot) {
-          //   if(snapshot.exists()){// if true
-          //     ChineseLiked[count++] = Chinese[index];
-          //   }
-          // });
+          database.ref('Users/'+fb_uid+'/Liked/'+title)
+          .once("value").then(function(snapshot) {
+            if(snapshot.exists()){// if true
+              ChineseLiked[count++] = Chinese[index];
+              console.log(ChineseLiked);
+            }else
+            return null;
+          });
       }
 
-      
+      function getData(index,title,callback){
+            setTimeout(()=>{
+                let res = selectLiked(index,title);
+                if(res)
+                  callback(res);
+            },5000)
+        }
 
       const updateSearch = (msg,type)=>{
         tempList = new Array;
@@ -164,14 +178,12 @@
             if(Chinese[i].Title.indexOf(msg)!=-1)
               tempList[count++] = Chinese[i]
           }
+        }else if(type === 'Liked'){
+          for(i=0;i<ChineseLiked.length;i++){
+            if(ChineseLiked[i].Title.indexOf(msg)!=-1)
+              tempList[count++] = ChineseLiked[i]
+          }
         }
-        // else if(type === 'Liked'){
-        //   for(i=0;i<ChineseLiked.length;i++){
-        //     if(ChineseLiked[i].Title.indexOf(msg)!=-1)
-        //       tempList[count++] = ChineseLiked[i]
-        //   }
-        // }
-        console.log(tempList);
         
         if(tempList.length === 0){
         var list = document.getElementById('recipelist');

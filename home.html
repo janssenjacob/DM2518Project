@@ -137,12 +137,12 @@ query.once("value")
     snapshot.forEach(function(childSnapshot) {
         // Key is the category of food: chinese, mother, slowcook etc.
         var key = childSnapshot.key;
-        console.log(key);
+        // console.log(key);
         // childData is the actual content of the children, in type object
         var childData = childSnapshot.val();
-        console.log(childData);
+        // console.log(childData);
         // Recieve upper boundry
-        console.log(childData.length); 
+        // console.log(childData.length); 
         
         let pictures = [];
         let names = [];
@@ -300,7 +300,11 @@ query.once("value")
     //LIKE/COOKED FUNCTIONS
 
     //BUTTON
+<<<<<<< HEAD
     /*const container = docuemt.getElementsByName('chinese0');
+=======
+    var container = document.getElementsByName('chinese0');
+>>>>>>> e4bcc4179302b3a77140396300487ae294cae4f5
 
     for (const item of container) {
         const button = document.createElement('button');
