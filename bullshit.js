@@ -52,6 +52,7 @@
         
 */
 
+            <i onclick="myFunction(this)" class="fa fa-heart" aria-hidden="true"></i>
 
 // Loop from chinese
 /* Let values can change, const can't */

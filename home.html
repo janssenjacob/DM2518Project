@@ -79,12 +79,35 @@
             cursor: pointer;
             user-select: none;
         }
-        
+
+        ul {
+            width: 100%;
+            list-style-type: none;
+            padding: 0; /* Remove padding */
+            margin: 0; /* Remove margins */
+            overflow-x: scroll;
+            white-space: nowrap;
+        }
+
+        .fa-heart-o {
+            right: -20px;
+        }
+
+        .fa-heart {
+            right: -20px;
+        }
+                
         .fa-cutlery {
             position: absolute;
             right: 20px;
-  
+            font-size: 13px;
         }
+
+        .fa-check-square-o {
+            position: absolute;
+            right: 20px;
+        }
+
         .fa:hover {
             color: darkblue;
         }
@@ -100,9 +123,11 @@
     <script>
 
     /* This will go into a js file when that shit is working again */
+/*
 function myFunction(x) {
 x.classList.toggle("fa fa-heart");
 }
+*/
 
 // EXTRACTING
 const myRef = firebase.database().ref("RecipeList");
@@ -154,34 +179,116 @@ query.once("value")
                 //var tmpObj=document.createElement("div");
                 //tmpObj.innerHTML='<div class="card">';
                 container.innerHTML = ('<div class="card">' + pictures[i] + '<div class="card-body">' +
-                '<h5 class="card-title">' + names[i] + '</h5>' + '</div>' + '<i class="fa fa-heart-o fa-pull-left" aria-hidden="true" onClick=myFunction()></i>'+'<i class="fa fa-cutlery" aria-hidden="true"></i>' );
+                '<h5 class="card-title">' + names[i] + '</h5>' + '</div>' + '<ul><li id="like"><i class="fa fa-heart-o fa-pull-left" aria-hidden="true"></i></li>'+ '<li id="cooked"><i class="fa fa-cutlery"></i></li></ul>' );
                 //container.appendTo('<div class="card">' + pictures.join("") + '</div>');
             
                 $(document).ready(function(){
                     $("img").addClass("card-img-top");
                 });
-            })
-            
-            
-            
 /*
-            var container = document.getElementById('items'); //any element to be fully replaced
-            if(container.outerHTML) { //if outerHTML is supported
-                childSnapshot.forEach(function() {
-                //container.append('<div class="card">' + pictures.join("") + '</div>');
-                container.outerHTML='<div class="card">' + pictures.join("") + '</div>';
-            })}
+                document.addEventListener('DOMContentLoaded', function () {
+                $('i').on('click', function () {
+                $(this)
+                    .find('[data-fa-i2svg]')
+                    .toggleClass('fa-heart')
+                    .toggleClass('fa-heart-o');
+                });
+            }); */
+
+                $("i").click(function() {
+                    //if ($('i').hasClass("heart")==true){
+                        $(this, i).toggleClass("fa-heart-o fa-heart");
+                    })
+
+                /*
+                //console.log($('i').hasClass("heart")) Thid does not work!
+                $("#like").click(function() {
+                    //if ($('i').hasClass("heart")==true){
+                        $(this, i).toggleClass("fa-heart-o fa-heart");
+                    })
+
+                $('#cooked').click(function() {
+                //if ($('i').hasClass("heart")==true){
+                        $(this, i).toggleClass("fa-cutlery fa-check-square-o");
+                    })
+                //$('#display_advance').toggle('1000');
+                    //else{
+                       // $(this).toggleClass("fa-check-square-o fa-cutlery");
+                    //}
+                */
             
-            else{ //if outerHTML is not supported, there is a weird but crossbrowsered trick
-                var tmpObj=document.createElement("div");
-                tmpObj.innerHTML='<div class="card">';
-                ObjParent=Obj.parentNode; //Okey, element should be parented
-                ObjParent.replaceChild(tmpObj,Obj); //here we placing our temporary data instead of our target, so we can find it then and replace it into whatever we want to replace to
-                ObjParent.innerHTML=ObjParent.innerHTML.replace('<div class="card">' + pictures.join("") + '</div>',str);
-            }
-*/        
-    
+                });
+
+            //})
+        var user = firebase.auth().currentUser;
+        if (user != null) {
+        user.providerData.forEach(function (profile) {
+            console.log("Friends: " + profile.Friends);
+            console.log("  Provider-specific UID: " + profile.uid);
+            console.log("  Name: " + profile.displayName);
+            console.log("  Email: " + profile.email);
+            console.log("  Photo URL: " + profile.photoURL);
+        });
+        }
+        /*
+        //element.
+        document.addEventListener('click', function(event) {
+        //check the database to see if it's liked by current user
+
+        // A post entry.
+        var postData = event.currentTarget;
+  
         
+        // Get a key for a new Post.
+        var newPostKey = firebase.database().ref('Users/'+fb_uid+'/Liked/').push().key;
+
+        // Write the new post's data simultaneously in the posts list and the user's post list.
+        var updates = {};
+        updates['/posts/' + newPostKey] = postData;
+        updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+
+        return firebase.database().ref().update(updates);
+        }
+}
+
+
+        var page = event.target;
+        if (page.id === 'details') {
+          //set the Like button to be "Liked" or "Like"
+            page.querySelector('#r-title').innerHTML = page.data.title;
+            page.querySelector('#r-img').innerHTML = '<img style="width:100%" src="https://'+page.data.img+'" alt="'+ page.data.title+'Picture">';
+            var normaltitle = page.data.title;
+            if(normaltitle.indexOf('&')!=-1)
+              normaltitle = checkAndNote(normaltitle);  
+            //check if the user has liked this recipe
+            var ref = firebase.database().ref('Users/'+fb_uid+'/Liked/'+normaltitle);
+            ref.once("value").then(function(snapshot) {
+              console.log('checking existence');
+                if(snapshot.exists()){// if true
+                  console.log('exist');
+                  page.querySelector('#likeButton').innerHTML = 'Liked';
+                }else{
+                  page.querySelector('#likeButton').innerHTML = 'Like';
+                }  
+              });
+            var Methods = page.data.methods;
+            var Ingreds = page.data.ingredients;
+            var detailList = document.getElementById('detailList');
+            detailList.appendChild(ons.createElement('<ons-list-header>Ingredients</ons-list-header>'));
+            for(i=0;i<Ingreds.length;i++){
+                detailList.appendChild(ons.createElement('<ons-list-item class="detail-ingreds">'+Ingreds[i]+'</ons-list-item>'))
+            }
+            // detailList.appendChild(ons.createElement('<br>'));
+            detailList.appendChild(ons.createElement('<ons-list-header>Methods</ons-list-header>'));
+            for(i=0;i<Methods.length;i++){
+                detailList.appendChild(ons.createElement('<ons-list-item class="detail-methods">'+Methods[i]+'</ons-list-item>'))
+            }
+        }
+
+    });
+    */
+
+
     };
 });
 });
@@ -189,14 +296,14 @@ query.once("value")
     //LIKE/COOKED FUNCTIONS
 
     //BUTTON
-    const container = docuemt.getElementsByName('chinese0');
+    /*const container = docuemt.getElementsByName('chinese0');
 
     for (const item of container) {
         const button = document.createElement('button');
         button.innerTest = 'Button';
         button.className = 'btn'
         item.append(button);
-    }
+    }*/
 
 
     </script>
