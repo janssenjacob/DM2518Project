@@ -1,5 +1,13 @@
 <ons-page style="overflow: hidden;">
-  <script src="react/button.js"></script>
+  <script>
+    var fb_uid = 'undefined';    
+    firebase.auth().onAuthStateChanged((user)=>{
+      fb_uid = user.uid;
+      console.log(fb_uid);
+    });
+    
+
+  </script>
   <style>
     .fixedElement {
       z-index: 999;
@@ -19,6 +27,7 @@
       document.getElementById('dropdownMenuButton').innerHTML = 'All';
       document.getElementById('All').classList.add('active');
     })()
+<<<<<<< HEAD
     const changeSearchType = (type) => {
       var cur = document.getElementById('dropdownMenuButton').innerHTML;
       // console.log(cur);
@@ -27,9 +36,23 @@
       else if (cur === 'Cooked')
         document.getElementById('Cooked').classList.remove('active');
       else
+=======
+
+    const changeSearchType = (type)=>{
+      var cur = document.getElementById('dropdownMenuButton').innerHTML;
+      console.log(cur);
+      if(cur === 'All'){
+        document.getElementById('All').classList.remove('active');
+      }
+      else if(cur === 'Liked'){
+>>>>>>> 6b276bbbc5b3d0825a25616644467bba9a89df4a
         document.getElementById('Liked').classList.remove('active');
+      }
+      updateSearch("",type);
+        //set cur type to active,
       document.getElementById(type).classList.add('active');
       document.getElementById('dropdownMenuButton').innerHTML = type;
+      document.getElementsByTagName('ons-search-input').value = "";
     }
 
     function showDetail(page, item) {
@@ -44,6 +67,7 @@
   </script>
 
   <!-- Search whatever and press enter -->
+<<<<<<< HEAD
   <form action="" method="GET" class="fixedElement">
     <ons-search-input placeholder="Search Recipe" onchange="updateSearch(this.value)" modifier="material"
       style="width: 70%;"></ons-search-input>
@@ -59,6 +83,26 @@
       </div>
     </div>
     <input type="button" onclick="updateSearch()" style="position: absolute; left: -9999px" />
+=======
+  <form class="fixedElement"> 
+      <ons-search-input 
+      placeholder="Search Recipe"
+      onchange="updateSearch(this.value,document.getElementById('dropdownMenuButton').innerHTML)" 
+      modifier = "material"
+      style="width: 70%;"
+      ></ons-search-input>
+      <div class="dropdown">
+        <button class="btn dropdown-toggle btn-primary" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+         aria-haspopup="true" aria-expanded="false" style=" width: 100%;height: 100%;">
+          All
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a id="All" class="dropdown-item" href="#" onclick="changeSearchType('All')">All</a>
+          <!-- <a id="Cooked" class="dropdown-item" href="#" onclick="changeSearchType('Cooked')">Cooked</a> -->
+          <a id="Liked" class="dropdown-item" href="#" onclick="changeSearchType('Liked')">Liked</a>
+        </div>
+      </div>
+>>>>>>> 6b276bbbc5b3d0825a25616644467bba9a89df4a
   </form>
   <div style="padding-top: 50px;overflow: auto;">
     <ons-list>
@@ -69,12 +113,15 @@
   <script>
     var tempList = "";
     var Chinese = "";
-    var Spring = "";
-    var Vegan = "";
-    var Mother = "";
-    var Easter = "";
-    var SlowCook = "";
+    var ChineseLiked = new Array;
+    var count = 0;
+    // var Spring = "";
+    // var Vegan = "";
+    // var Mother = "";
+    // var Easter = "";
+    // var SlowCook = "";
     var RecipeList = firebase.database().ref('RecipeList');
+<<<<<<< HEAD
     RecipeList.on('value', function (snapshot) {
       Chinese = snapshot.val().chinese;
 
@@ -102,6 +149,32 @@
               '<div class="center">' +
               ' <span class="list-item__title">' + tempList[index].Title + '</span><span class="list-item__subtitle">' + tempList[index].Skill + '</span>' +
               '</div>' +
+=======
+      RecipeList.on('value', function(snapshot) {
+        Chinese = snapshot.val().chinese;
+        // Easter = snapshot.val().easter;
+        // Spring = snapshot.val().spring;
+        // Soup = snapshot.val().soup;
+        // Vegan = snapshot.val().vegan;
+        // SlowCook = snapshot.val().slowcook;
+        // Mother = snapshot.val().mothers;
+        // console.log(Chinese[0].Img);
+        tempList = Chinese;
+        var database = firebase.database();
+        //get ChineseLiked
+        (()=>{
+        var list = document.getElementById('recipelist');
+        list.delegate = {
+          createItemContent: function (index) {
+
+            var listitem = '<ons-list-item id="'+index+'" onclick="showDetail(\'detail.html\',this)">'+
+              '<div class="left"> '+
+              '<img class="list-item__thumbnail"src="https://'+tempList[index].Img+'">'+
+              '</div>'+
+              '<div class="center">'+
+              ' <span class="list-item__title">'+tempList[index].Title+'</span><span class="list-item__subtitle">'+tempList[index].Skill+'</span>'+
+              '</div>'+
+>>>>>>> 6b276bbbc5b3d0825a25616644467bba9a89df4a
               '</ons-list-item>';
             return ons.createElement(listitem);
           },
@@ -117,6 +190,7 @@
           destroyItem: function (index, element) {
             // Remove event listeners, etc. here to avoid memory leaks.
           }
+<<<<<<< HEAD
         };
       })()
     });
@@ -130,6 +204,64 @@
           tempList[count++] = Chinese[i]
       }
       if (tempList.length === 0) {
+=======
+        };})()
+
+        //Adding Liked List, but cannot solve async problem
+        
+        for(let i=0;i<Chinese.length;i++){
+          var title = Chinese[i].Title;
+          if(title.indexOf('&')!=-1)
+            title = checkAndNote(title);
+          // getData(i,title,res=>{
+          //   res.then(prom=>{
+          //     if(prom!=null){
+          //       ChineseLiked[count++] = prom;
+          //       console.log(ChineseLiked);
+          //       console.log(ChineseLiked.length);
+          //     }
+          //   })
+          // })
+          selectLiked(i,title);
+        }
+      });
+
+      function selectLiked(index,title){
+          database.ref('Users/'+fb_uid+'/Liked/'+title)
+          .once("value").then(function(snapshot) {
+            if(snapshot.exists()){// if true
+              ChineseLiked[count++] = Chinese[index];
+              console.log(ChineseLiked);
+            }else
+            return null;
+          });
+      }
+
+      function getData(index,title,callback){
+            setTimeout(()=>{
+                let res = selectLiked(index,title);
+                if(res)
+                  callback(res);
+            },5000)
+        }
+
+      const updateSearch = (msg,type)=>{
+        tempList = new Array;
+        var count = 0;
+        if(type === "All"){
+          for(i=0;i<Chinese.length;i++){
+            if(Chinese[i].Title.indexOf(msg)!=-1)
+              tempList[count++] = Chinese[i]
+          }
+        }else if(type === 'Liked'){
+          for(i=0;i<ChineseLiked.length;i++){
+            if(ChineseLiked[i].Title.indexOf(msg)!=-1)
+              tempList[count++] = ChineseLiked[i]
+          }
+        }
+        
+        if(tempList.length === 0){
+>>>>>>> 6b276bbbc5b3d0825a25616644467bba9a89df4a
         var list = document.getElementById('recipelist');
         list.delegate = {
           createItemContent: function (index) {
@@ -140,8 +272,6 @@
             return 1;
           },
           calculateItemHeight: function (index) {
-            // Optional: return the height of the item at position `index`.
-            // This can enhance calculations and allow better scrolling.
             return 0;
           },
           destroyItem: function (index, element) {
@@ -152,6 +282,7 @@
         var list = document.getElementById('recipelist');
         list.delegate = {
           createItemContent: function (index) {
+<<<<<<< HEAD
             // Return a DOM element here.
             // return ons.createElement( '<ons-list-item id="listitem'+index+'">Item'+index+'</ons-list-item>');
             // console.log(tempList[index].Img);
@@ -164,6 +295,16 @@
               '</div>' +
               '</ons-list-item>';
 
+=======
+            var listitem = '<ons-list-item id="'+index+'" onclick="showDetail(\'detail.html\',this)">'+
+              '<div class="left"> '+
+              '<img class="list-item__thumbnail"src="https://'+tempList[index].Img+'">'+
+              '</div>'+
+              '<div class="center">'+
+              ' <span class="list-item__title">'+tempList[index].Title+'</span><span class="list-item__subtitle">'+tempList[index].Skill+'</span>'+
+              '</div>'+
+              '</ons-list-item>';
+>>>>>>> 6b276bbbc5b3d0825a25616644467bba9a89df4a
             return ons.createElement(listitem);
           },
           countItems: function () {
@@ -184,6 +325,7 @@
     }
   </script>
   <script>
+<<<<<<< HEAD
     document.addEventListener('init', function (event) {
       //check the database to see if it's liked by current user
       var page = event.target;
@@ -202,6 +344,52 @@
         detailList.appendChild(ons.createElement('<ons-list-header>Methods</ons-list-header>'));
         for (i = 0; i < Methods.length; i++) {
           detailList.appendChild(ons.createElement('<ons-list-item>' + Methods[i] + '</ons-list-item>'))
+=======
+
+
+    function checkAndNote(normaltitle){
+      var index = normaltitle.indexOf('&');
+      var temp1 = normaltitle.substring(0,index+1);
+      var temp2 = normaltitle.substring(index+1,normaltitle.length);
+      temp1 = temp1 + "amp;";
+      normaltitle = temp1+temp2;
+      return normaltitle;
+    }
+    
+    document.addEventListener('init', function(event) {
+      //check the database to see if it's liked by current user
+    var page = event.target;
+        if (page.id === 'details') {
+          //set the Like button to be "Liked" or "Like"
+            page.querySelector('#r-title').innerHTML = page.data.title;
+            page.querySelector('#r-img').innerHTML = '<img style="width:100%" src="https://'+page.data.img+'" alt="'+ page.data.title+'Picture">';
+            var normaltitle = page.data.title;
+            if(normaltitle.indexOf('&')!=-1)
+              normaltitle = checkAndNote(normaltitle);  
+            //check if the user has liked this recipe
+            var ref = firebase.database().ref('Users/'+fb_uid+'/Liked/'+normaltitle);
+            ref.once("value").then(function(snapshot) {
+              console.log('checking existence');
+                if(snapshot.exists()){// if true
+                  console.log('exist');
+                  page.querySelector('#likeButton').innerHTML = 'Liked';
+                }else{
+                  page.querySelector('#likeButton').innerHTML = 'Like';
+                }  
+              });
+            var Methods = page.data.methods;
+            var Ingreds = page.data.ingredients;
+            var detailList = document.getElementById('detailList');
+            detailList.appendChild(ons.createElement('<ons-list-header>Ingredients</ons-list-header>'));
+            for(i=0;i<Ingreds.length;i++){
+                detailList.appendChild(ons.createElement('<ons-list-item class="detail-ingreds">'+Ingreds[i]+'</ons-list-item>'))
+            }
+            // detailList.appendChild(ons.createElement('<br>'));
+            detailList.appendChild(ons.createElement('<ons-list-header>Methods</ons-list-header>'));
+            for(i=0;i<Methods.length;i++){
+                detailList.appendChild(ons.createElement('<ons-list-item class="detail-methods">'+Methods[i]+'</ons-list-item>'))
+            }
+>>>>>>> 6b276bbbc5b3d0825a25616644467bba9a89df4a
         }
       }
 
