@@ -1,5 +1,13 @@
 <ons-page style="overflow: hidden;">
-  <script>var fb_uid = 'DtUdtlcPMoOFXd1D4EgjuJ6Y2hp1';</script>
+  <script>
+    var fb_uid = 'undefined';    
+    firebase.auth().onAuthStateChanged((user)=>{
+      fb_uid = user.uid;
+      console.log(fb_uid);
+    });
+    
+
+  </script>
   <style>
     .fixedElement {
       z-index: 999;
