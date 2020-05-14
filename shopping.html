@@ -1,8 +1,38 @@
 <ons-page>
-  
-
-  <div>
-    <h1 style="text-align: center;">Shopping Page</h1>
+  <div class="form-group">
+    <textarea class="form-control" rows="30" oninput="saveText()" id="textArea"
+      placeholder="What do you need from the store?" style="font-family: Indie Flower"></textarea>
   </div>
+
+  <script>
+    /**
+    * Reads List data into textArea.
+    **/
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        var userId = firebase.auth().currentUser.uid;
+        firebase.database().ref('/Users/' + userId + '/List').on('value', function (snapshot) {
+          document.getElementById("textArea").value = snapshot.val();
+        });
+      } else {
+        alert("You're not logged in!");
+      }
+    });
+
+    /**
+    * Saves text in textArea to List in Firebase.
+    **/
+    function saveText() {
+      var user = firebase.auth().currentUser;
+      if (user) {
+        var userId = firebase.auth().currentUser.uid;
+        firebase.database().ref('Users/' + userId).set({
+          List: document.getElementById("textArea").value
+        });
+      } else {
+        console.log("Not logged in?");
+      }
+    };
+  </script>
 
 </ons-page>
