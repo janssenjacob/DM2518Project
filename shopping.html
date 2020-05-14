@@ -26,9 +26,9 @@
       var user = firebase.auth().currentUser;
       if (user) {
         var userId = firebase.auth().currentUser.uid;
-        firebase.database().ref('Users/' + userId).set({
-          List: document.getElementById("textArea").value
-        });
+        firebase.database().ref('Users/' + userId+'/List').set(
+          document.getElementById("textArea").value
+        );
       } else {
         console.log("Not logged in?");
       }
