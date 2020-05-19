@@ -156,16 +156,3 @@ function writeUserData(user) {
   };
   firebase.database().ref('Users/' + uid).set(newUser);
 }
-
-firebase.auth().onAuthStateChanged(function (user) {
-  if (user) {
-    // console.log('in');
-    // console.log(user);
-    uid = user.uid;
-    firebase.database().ref('Users/' + uid + '/Friends').once('value').then(function (snapshot) {
-      snapshot.forEach(child => {
-        displayFriends(child.val());
-      });
-    });
-  } else { console.log('out') }
-});

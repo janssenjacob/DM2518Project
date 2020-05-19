@@ -10,57 +10,68 @@
   }
   </style>
   <script>
-    var container = document.getElementById('container');
-    var inputFrd = document.querySelector('#inputFrd');
-    var popover = document.getElementById('popover');
-    var userList = firebase.database().ref('Users');
-    function displayFriends(frd) {
-      container.appendChild(ons.createElement(`
-      <div id="${frd.id}" class="media text-muted pt-3">
-          <img src="${frd.picture}" class="align-self-start mr-3" width="32" height="32">
-          <div class="media-body">
-            <div class="d-flex justify-content-between">
-              <strong class="text-gray-dark">${frd.username}</strong>
-              <a href="javascript:void(0)" onclick="confirm(this)">Unfriend</a>
-            </div>
-            <span class="d-block">${frd.email}</span>
-          </div>
-      </div>`));
-    }
-    const hidePopover = () => {
-      inputFrd.value = '';
-      popover.hide();
-    }
-    function addFriends() {
-      userList.orderByChild("email").equalTo(inputFrd.value).on('value', function (snapshot) {
-        if (snapshot.val()) {
-          snapshot.forEach(child => {
-            writeFrdData(child.val());
-          })
-          inputFrd.value = '';
-        } else ons.notification.alert(`No ${inputFrd.value}`);
+  var uid;
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      uid = firebase.auth().currentUser.uid;
+      firebase.database().ref('Users/' + uid + '/Friends').once('value').then(function (snapshot) {
+        snapshot.forEach(child => {
+          displayFriends(child.val());
+        });
       });
+    } else { console.log('out') }
+  });
+  var container = document.getElementById('container');
+  var inputFrd = document.querySelector('#inputFrd');
+  var popover = document.getElementById('popover');
+  var userList = firebase.database().ref('Users');
+  function displayFriends(frd) {
+    container.appendChild(ons.createElement(`
+    <div id="${frd.id}" class="media text-muted pt-3">
+        <img src="${frd.picture}" class="align-self-start mr-3" width="32" height="32">
+        <div class="media-body">
+        <div class="d-flex justify-content-between">
+            <strong class="text-gray-dark">${frd.username}</strong>
+            <a href="javascript:void(0)" onclick="confirm(this)">Unfriend</a>
+        </div>
+        <span class="d-block">${frd.email}</span>
+        </div>
+    </div>`));
+  }
+  const hidePopover = () => {
+    inputFrd.value = '';
+    popover.hide();
+  }
+  function addFriends() {
+    userList.orderByChild("email").equalTo(inputFrd.value).on('value', function (snapshot) {
+    if (snapshot.val()) {
+        snapshot.forEach(child => {
+        writeFrdData(child.val());
+        })
+        inputFrd.value = '';
+    } else ons.notification.alert(`No ${inputFrd.value}`);
+    });
+  }
+  function writeFrdData(frd) {
+    id = frd.id;
+    var user = {
+    id: frd.id,
+    email: frd.email,
+    username: frd.username,
+    picture: frd.picture,
+    };
+    firebase.database().ref('Users/'+uid+'/Friends/'+id).set(user);
+    displayFriends(user);
+  }
+  const confirm = (el) => {
+    var id = el.parentNode.parentNode.parentNode.id;
+    ons.notification.confirm(`Are you sure you want to unfriend him?`)
+    .then((x) => {if (x==1) {
+        firebase.database().ref('Users/'+uid+'/Friends/'+id).remove();
+        document.getElementById(id).remove();
     }
-    function writeFrdData(frd) {
-      id = frd.id;
-      var user = {
-        id: frd.id,
-        email: frd.email,
-        username: frd.username,
-        picture: frd.picture,
-      };
-      firebase.database().ref('Users/'+uid+'/Friends/'+id).set(user);
-      displayFriends(user);
-    }
-    const confirm = (el) => {
-      var id = el.parentNode.parentNode.parentNode.id;
-      ons.notification.confirm(`Are you sure you want to unfriend him?`)
-      .then((x) => {if (x==1) {
-          firebase.database().ref('Users/'+uid+'/Friends/'+id).remove();
-          document.getElementById(id).remove();
-        }
-      });
-    }
+    });
+  }
   </script>
   <body>
     <ons-popover direction="down" id="popover">
