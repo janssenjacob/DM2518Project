@@ -69,25 +69,23 @@
 // GRAB USER DATA
 
 var user = firebase.auth().currentUser;
-        if (user != null) {
-        user.providerData.forEach(function (profile) {
-            console.log("Friends: " + profile.Friends);
-            var iud = profile.uid; 
-            console.log("  Provider-specific UID: " + profile.uid);
-            console.log("  Name: " + profile.displayName);
-            console.log("  Email: " + profile.email);
-            console.log("  Photo URL: " + profile.photoURL);
-            });
-        }
-        else{
-            var uid = "vTKVAiEMIPYsLpiiiVwbpu2Zlct1";
-        }
+    if (user != null) {
+    user.providerData.forEach(function (profile) {
+        console.log("Friends: " + profile.Friends);
+        var myiud = profile.uid; 
+        console.log("  Provider-specific UID: " + profile.uid);
+        console.log("  Name: " + profile.displayName);
+        console.log("  Email: " + profile.email);
+        console.log("  Photo URL: " + profile.photoURL);
+        });
+    }
+    else{
+        var myuid = "vTKVAiEMIPYsLpiiiVwbpu2Zlct1";   // Manually add your uid here
+        //var uid = "nj4oEzYr1JOeswPciODfrU2eoEk1";
+    }
 
 
 // EXTRACTING
-
-let pictures = [];
-let names = [];
 let j = 0;
 const myRef = firebase.database().ref("RecipeList");
 const query = myRef.orderByKey();
@@ -163,8 +161,8 @@ query.once("value").then(function(snapshot) {
     });
 });
 
-loadLikes()
-
+loadHistory(myuid)
+loadfriendsHistory(myuid)
 
 // Writing to database
 function writetoDatabase(status, key, i){
@@ -213,7 +211,7 @@ newitem.on('value', function(snapshot) {
 }
 
 // LOAD PREVIOUS LIKED POSTS 
-function loadLikes() {
+function loadHistory(uid) {
 var ref = firebase.database().ref('Users/'+uid);    // Fetch data from user id
     ref.once("value")
     .then(function(snapshot) {
@@ -231,7 +229,6 @@ var ref = firebase.database().ref('Users/'+uid);    // Fetch data from user id
                     let childData = childSnapshot.val();
                     let extractData = Object.values(childData);
                     //console.log(extractData);
-                    let grablikedData = [];
                     for (let j = 0; j <= (numLikes - 1); j++){
                             let i = extractData[j].id;
                             //console.log(i);
@@ -247,7 +244,6 @@ var ref = firebase.database().ref('Users/'+uid);    // Fetch data from user id
                 let childData = childSnapshot.val();
                 let extractData = Object.values(childData);
                 //console.log(extractData);
-                let grablikedData = [];
                 for (let j = 0; j <= (numCooked - 1); j++){
                         let i = extractData[j].id;
                         //console.log(i);
@@ -261,6 +257,45 @@ var ref = firebase.database().ref('Users/'+uid);    // Fetch data from user id
                 }
                 
             })
+        }
+        else {
+            if (uid == myuid){
+                console.log("You have not liked or cooked any recipe yet.");
+            } 
+            else {
+                console.log("Your friends have not liked or cooked any recipe yet.");
+            }   
+        }
+    });
+}
+
+function loadfriendsHistory(uid) {
+var ref = firebase.database().ref('Users/'+uid); // Fetch data from user id
+    ref.once("value")
+    .then(function(snapshot) {
+        var hasFriends = snapshot.child("Friends").hasChildren(); // Returns true if children existss
+        //console.log(hasFriends)
+        if (hasFriends){ // Continuing if there are any liked and cooked posts
+            var numFriends = snapshot.child("Friends").numChildren(); // Retrieve upper boundry
+            //console.log(numFriends)
+            snapshot.forEach(function(childSnapshot){
+                let key = childSnapshot.key;    // Key is Liked, List etc.
+                //console.log(key);
+                if (key == "Friends"){
+                    let childData = childSnapshot.val();
+                    let extractData = Object.values(childData);
+                    //console.log(extractData);
+                    for (let j = 0; j <= (numFriends - 1); j++){
+                            let i = extractData[j].id;
+                            //console.log(i);
+                            loadHistory(i)
+                        }
+                    }
+
+            })
+        }
+        else {
+            console.log("You have no Friends. Add Friends to see their activity!");
         }
     });
 }
