@@ -66,7 +66,60 @@
     <body>
     <script>
 
+// GRAB USER DATA
+
+var user = firebase.auth().currentUser;
+        if (user != null) {
+        user.providerData.forEach(function (profile) {
+            console.log("Friends: " + profile.Friends);
+            var iud = profile.uid; 
+            console.log("  Provider-specific UID: " + profile.uid);
+            console.log("  Name: " + profile.displayName);
+            console.log("  Email: " + profile.email);
+            console.log("  Photo URL: " + profile.photoURL);
+            });
+        }
+        else{
+            var uid = "vTKVAiEMIPYsLpiiiVwbpu2Zlct1";
+        }
+        
+//console.log(uid);
+
+
+// LOAD PREVIOUS LIKED POSTS 
+function loadLikes() {
+var ref = firebase.database().ref('Users/'+uid);    // Fetch data from user id
+ref.once("value")
+.then(function(snapshot) {
+    var hasLiked = snapshot.child("Liked").hasChildren(); // === True
+    console.log(hasLiked)
+    var numLikes = snapshot.child("Liked").numChildren(); // Retrieve upper boundry
+    console.log(numLikes)
+    snapshot.forEach(function(childSnapshot){
+        let key = childSnapshot.key;    // Key is Liked, List etc.
+        //console.log(key);
+        if (key == "Liked"){
+            let childData = childSnapshot.val();
+            let extractData = Object.values(childData);
+            //console.log(extractData);
+            let grablikedData = [];
+            for (let j = 0; j <= (numLikes - 1); j++){
+                    let i = extractData[j].id;
+                    console.log(i);
+                    let key = extractData[j].category;
+                    console.log(key)
+                    $(document).ready(function(){
+                    icon = $('#like' +key+`${i}`).find("i");
+                    icon.toggleClass("fa-heart-o fa-heart")
+                    })
+                }
+            }
+        })
+    });
+}
+
 // EXTRACTING
+
 let pictures = [];
 let names = [];
 let j = 0;
@@ -80,19 +133,21 @@ query.once("value").then(function(snapshot) {
 
         let childData = childSnapshot.val();    // childData is the actual content of the children, in type object
         //console.log(childData);
-        //console.log(childData.length      // Recieve upper boundry
-            
+        //console.log(childData.length      // Retrieve upper boundry
+        
+
+        // DECIDING WHAT TO PUBLISH NEEDS TO COME IN HERE
         // Creating div containers for each element
         let htmlElements = "";
-        for (let i = 0; i <= (childData.length - 1); i++){  // Why only get the last occurence? Must create a larger loop
+        for (let i = 0; i <= (childData.length - 1); i++){ 
         htmlElements += '<div id="'+key+`${i}`+'"></div>';
         }
         //console.log(htmlElements)
         //console.log("card-group"+`${j}`)
         var container = document.getElementById("card-group"+`${j}`);
         container.innerHTML = htmlElements;
-        j++;
-        console.log(container)
+        j++;    // Larger loop, j is the number of keys
+        //console.log(container)
         
         // Loop to get single objects and extract information about image and title
         for (let i = 0; i <= (childData.length - 1); i++){
@@ -114,19 +169,68 @@ query.once("value").then(function(snapshot) {
                 $("img").addClass("card-img-top");
             });
 
-            $('#like' +key+`${i}`).click(function(){    // Needs more uniqueness
+            $('#like' +key+`${i}`).click(function(){
             icon = $(this).find("i");
             icon.toggleClass("fa-heart-o fa-heart")
+
+            if (icon.hasClass("fa-heart")){
+                writetoDatabase("liked",key,i)
+            }
+            else{
+                console.log("disliked")
+            }
             })
+                    
                         
             $('#cooked'+key+`${i}`).click(function(){
             icon = $(this).find("i");
             icon.toggleClass("fa-check-square-o fa-cutlery")
+            writetoDatabase("cooked",key,i)
             })
-    };
+        };
+    });
 });
+
+loadLikes()
+
+// LIKE AND COOKED FUNCTIONS, ADDING RECIPES TO USER ACCOUNT
+
+// Writing to database
+function writetoDatabase(status, key, i){
+
+
+let newitem = firebase.database().ref("RecipeList/"+key);
+let newpath = firebase.database().ref("RecipeList/"+key+"/"+`${i}`);
+let path = newpath.toString();
+//console.log(path)
+newitem.on('value', function(snapshot) {
+   let itemdata = snapshot.val();
+   let item = itemdata[i];
+    //console.log(item.Title)
+    let content = {
+        category: key,
+        id: i
+    }
+    console.log(status)
+    // Get a key for a new Post
+    var newPostKey = firebase.database().ref('Users/'+uid+'/Liked/').push().key; // If one exists
+
+    // Write the new post's data simultaneously in the posts list and the user's post list.
+    var updates = {};
+    updates['Users/'+uid+'/Liked/' + newPostKey] = content; //Saving the URL for reference
+    //updates['/user-posts/' + uid + '/' + newPostKey] = item.Title;
+
+    return firebase.database().ref().update(updates, function(error) {
+        if (error) {
+        console.log("Writing failed")
+        } else {
+        console.log("Data saved successfully!");
+        }
+  });
 });
-    
+
+}
+
     </script>
     
     <script src="home.js"></script>
