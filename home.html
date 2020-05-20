@@ -84,56 +84,6 @@ var user = firebase.auth().currentUser;
         }
 
 
-// LOAD PREVIOUS LIKED POSTS 
-function loadLikes() {
-var ref = firebase.database().ref('Users/'+uid);    // Fetch data from user id
-    ref.once("value")
-    .then(function(snapshot) {
-        var hasLiked = snapshot.child("Liked").hasChildren(); // === True
-        console.log(hasLiked)
-        var numLikes = snapshot.child("Liked").numChildren(); // Retrieve upper boundry
-        console.log(numLikes)
-        snapshot.forEach(function(childSnapshot){
-            let key = childSnapshot.key;    // Key is Liked, List etc.
-            //console.log(key);
-            if (key == "Liked"){
-                let childData = childSnapshot.val();
-                let extractData = Object.values(childData);
-                //console.log(extractData);
-                let grablikedData = [];
-                for (let j = 0; j <= (numLikes - 1); j++){
-                        let i = extractData[j].id;
-                        console.log(i);
-                        let key = extractData[j].category;
-                        console.log(key)
-                        $(document).ready(function(){
-                        icon = $('#like' +key+`${i}`).find("i");
-                        icon.toggleClass("fa-heart-o fa-heart")
-                        })
-                    }
-                }
-            if (key == "Cooked"){
-            let childData = childSnapshot.val();
-            let extractData = Object.values(childData);
-            //console.log(extractData);
-            let grablikedData = [];
-            for (let j = 0; j <= (numLikes - 1); j++){
-                    let i = extractData[j].id;
-                    console.log(i);
-                    let key = extractData[j].category;
-                    console.log(key)
-                    $(document).ready(function(){
-                    icon = $('#cooked' +key+`${i}`).find("i");
-                    icon.toggleClass("fa-check-square-o fa-cutlery")
-                    })
-                }
-            }
-            
-        })
-        
-    });
-}
-
 // EXTRACTING
 
 let pictures = [];
@@ -215,7 +165,6 @@ query.once("value").then(function(snapshot) {
 
 loadLikes()
 
-// LIKE AND COOKED FUNCTIONS, ADDING RECIPES TO USER ACCOUNT
 
 // Writing to database
 function writetoDatabase(status, key, i){
@@ -234,36 +183,87 @@ newitem.on('value', function(snapshot) {
         id: i
     }
     console.log(status)
-    if (status=="liked"){
-        // Get a key for a new Post
-        var newPostKey = firebase.database().ref('Users/'+uid+'/Liked/').push().key; // If one exists
+        if (status=="liked"){
+            // Get a key for a new Post
+            var newPostKey = firebase.database().ref('Users/'+uid+'/Liked/').push().key; // If one exists
 
-        // Write the new post's data simultaneously in the posts list and the user's post list.
-        var updates = {};
-        updates['Users/'+uid+'/Liked/' + newPostKey] = content;
-        //updates['/user-posts/' + uid + '/' + newPostKey] = item.Title;
-    }
-    if (status=="cooked"){
-    
-        // Get a key for a new Post
-        var newPostKey = firebase.database().ref('Users/'+uid+'/Cooked/').push().key; // If one exists
-
-        // Write the new post's data simultaneously in the posts list and the user's post list.
-        var updates = {};
-        updates['Users/'+uid+'/Cooked/' + newPostKey] = content;
-
-    }
-    return firebase.database().ref().update(updates, function(error) {
-        if (error) {
-        console.log("Writing failed")
-        } else {
-        console.log("Data saved successfully!");
+            // Write the new post's data simultaneously in the posts list and the user's post list.
+            var updates = {};
+            updates['Users/'+uid+'/Liked/' + newPostKey] = content;
+            //updates['/user-posts/' + uid + '/' + newPostKey] = item.Title;
         }
-  });
-});
+        if (status=="cooked"){
+        
+            // Get a key for a new Post
+            var newPostKey = firebase.database().ref('Users/'+uid+'/Cooked/').push().key; // If one exists
 
+            // Write the new post's data simultaneously in the posts list and the user's post list.
+            var updates = {};
+            updates['Users/'+uid+'/Cooked/' + newPostKey] = content;
+
+        }
+        return firebase.database().ref().update(updates, function(error) {
+            if (error) {
+            console.log("Writing failed")
+            } else {
+            console.log("Data saved successfully!");
+            }
+        });
+    });
 }
 
+// LOAD PREVIOUS LIKED POSTS 
+function loadLikes() {
+var ref = firebase.database().ref('Users/'+uid);    // Fetch data from user id
+    ref.once("value")
+    .then(function(snapshot) {
+        var hasLiked = snapshot.child("Liked").hasChildren(); // Returns true if children existss
+        var hasCooked = snapshot.child("Cooked").hasChildren();
+        //console.log(hasLiked, hasCooked)
+        if (hasLiked || hasCooked){ // Continuing if there are any liked and cooked posts
+            var numLikes = snapshot.child("Liked").numChildren(); // Retrieve upper boundry
+            var numCooked = snapshot.child("Cooked").numChildren();
+            //console.log(numLikes, numCooked)
+            snapshot.forEach(function(childSnapshot){
+                let key = childSnapshot.key;    // Key is Liked, List etc.
+                //console.log(key);
+                if (key == "Liked"){
+                    let childData = childSnapshot.val();
+                    let extractData = Object.values(childData);
+                    //console.log(extractData);
+                    let grablikedData = [];
+                    for (let j = 0; j <= (numLikes - 1); j++){
+                            let i = extractData[j].id;
+                            //console.log(i);
+                            let key = extractData[j].category;
+                            //console.log(key)
+                            $(document).ready(function(){
+                            icon = $('#like' +key+`${i}`).find("i");
+                            icon.toggleClass("fa-heart-o fa-heart")
+                            })
+                        }
+                    }
+                if (key == "Cooked"){
+                let childData = childSnapshot.val();
+                let extractData = Object.values(childData);
+                //console.log(extractData);
+                let grablikedData = [];
+                for (let j = 0; j <= (numCooked - 1); j++){
+                        let i = extractData[j].id;
+                        //console.log(i);
+                        let key = extractData[j].category;
+                        //console.log(key)
+                        $(document).ready(function(){
+                        icon = $('#cooked' +key+`${i}`).find("i");
+                        icon.toggleClass("fa-check-square-o fa-cutlery")
+                        })
+                    }
+                }
+                
+            })
+        }
+    });
+}
     </script>
     
     <script src="home.js"></script>
