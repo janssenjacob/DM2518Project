@@ -34,6 +34,9 @@
             white-space: nowrap;
         }
 
+        p {
+            text-align: left;
+        }
         .addcolor {
             color:rgb(185, 116, 185);
         }
@@ -50,7 +53,6 @@
         .fa-cutlery {
             position: absolute;
             right: 20px;
-            font-size: 13px;
         }
 
         .fa-check-square-o {
@@ -131,7 +133,7 @@ query.once("value").then(function(snapshot) {
 
             var smallContainer = document.getElementById(key+`${i}`);
             smallContainer.innerHTML = ('<div class="card">' + extractPicture + '<div class="card-body">' +
-            '<h5 class="card-title">' + extractName + '</h5>' + '</div>' + '<ul><li id="like'+key+`${i}`+ '"><i class="fa fa-heart-o fa-pull-left" aria-hidden="true"></i></li>'+'<li id="cooked'+key+`${i}`+'"><i class="fa fa-cutlery"></i></li></ul>' );
+            '<h5 class="card-title">' + extractName + '</h5>' + '</div>' + '<ul><li id="like'+key+`${i}`+'"><i class="fa fa-heart-o fa-pull-left" aria-hidden="true"></i></li>'+'<li id="cooked'+key+`${i}`+'"><i class="fa fa-cutlery"></i></li></ul>' );
             
             $(document).ready(function(){
                 $("img").addClass("card-img-top");
@@ -280,10 +282,10 @@ var ref = firebase.database().ref('Users/'+uid);    // Fetch data from user id
                             }
                             else{
                                 $(document).ready(function(){
-                                icon = $('#like' +key+`${i}`)//.find("i");
-                                //icon.toggleClass("fa-heart-o fa-heart")
+                                icon = $('#cooked' +key+`${i}`).find("i");
                                 //icon.addClass("addcolor")
-                                icon.prepend("<h5>"+friend+" likes this</h5>")
+                                //icon.prepend("<h5>"+friend+" likes this</h5>")
+                                icon.after("<br><p class='card-text'><small>"+friend+" likes this</small></p>")
                                 })
                             }
                         }
@@ -305,9 +307,11 @@ var ref = firebase.database().ref('Users/'+uid);    // Fetch data from user id
                         }
                         else {
                             $(document).ready(function(){
-                            icon = $('#cooked' +key+`${i}`) //.find("i");
+                            icon = $('#cooked' +key+`${i}`)//.find("i");
                             //icon.addClass("addcolor")
-                            icon.prepend("<h5>"+friend+" made this</h5>")
+                            //icon.prepend("<h5>"+friend+" made this</h5>")
+                            icon.after("<br><p class='card-text' style='text-align:right'><small>"+friend+" made this</small></p>")
+                           
                             })
                         }
                     }
